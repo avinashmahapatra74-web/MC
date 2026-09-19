@@ -1,3 +1,27 @@
+import { GoogleGenAI } from "@google/genai";
+
+// Apni Gemini API key yahan dalein
+const ai = new GoogleGenAI({ apiKey: "YOUR_GEMINI_API_KEY" });
+
+// 1. AI Chat & Q&A ke liye function
+export async function getGeminiResponse(userPrompt: string): Promise<string> {
+    try {
+        const response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: userPrompt,
+        });
+        return response.text || "No response received.";
+    } catch (error) {
+        console.error("Gemini Error:", error);
+        return "Error: Failed to fetch AI response.";
+    }
+}
+
+// 2. Caption, Hashtags & Keywords Generator ke liye function
+export async function generateSocialContent(topic: string): Promise<string> {
+    const prompt = `Generate 3 engaging captions, 10 trending hashtags, and 5 SEO keywords for this topic: ${topic}`;
+    return await getGeminiResponse(prompt);
+}
 import { Post, Comment, User, Session, FeatureFlag, AuditLogEntry } from '../types';
 
 // Device identity in localStorage (simulating Android Keystore install-scoped ID)
