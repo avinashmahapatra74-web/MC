@@ -340,3 +340,30 @@ export const api = {
   },
 };
 
+// --- STEP 2: Full-Screen aur Auto-Rotate Functions ---
+
+// Full-Screen Toggle karne ke liye
+export function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+            console.error("Error enabling full-screen:", err);
+        });
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+    }
+}
+
+// Screen Orientation / Auto-Rotate lock karne ke liye
+export async function handleOrientation(lockType: OrientationLockType) {
+    try {
+        if (screen.orientation && (screen.orientation as any).lock) {
+            await (screen.orientation as any).lock(lockType);
+        } else {
+            alert("Screen orientation lock is not supported on this browser.");
+        }
+    } catch (error) {
+        console.error("Orientation lock failed:", error);
+    }
+}
