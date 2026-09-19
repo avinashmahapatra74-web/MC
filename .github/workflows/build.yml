@@ -1,4 +1,4 @@
-name: Build and Check Errors
+name: Unzip and Build Z-eye
 
 on:
   push:
@@ -13,13 +13,19 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
 
+    - name: Extract Project ZIP
+      run: |
+        if [ -f "z-eye.zip" ]; then
+          unzip -o z-eye.zip
+        fi
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: 18
+        node-version: 20
 
     - name: Install Dependencies
       run: npm install
 
-    - name: Build Project & Find Errors
-      run: npm run build
+    - name: Build Web App
+      run: npx vite build
