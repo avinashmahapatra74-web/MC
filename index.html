@@ -29,3 +29,41 @@
     <div id="loadingSpinner" style="display:none;">Loading...</div>
     <div id="outputResult"></div>
 </div>
+<script type="module">
+    // api.ts se functions import karein (agar module setup hai)
+    import { getGeminiResponse, generateSocialContent, toggleFullScreen } from './api.ts'; // ya compiled path
+
+    document.getElementById('sendBtn').addEventListener('click', async () => {
+        const inputField = document.getElementById('userInput');
+        const spinner = document.getElementById('loadingSpinner');
+        const resultDiv = document.getElementById('outputResult');
+        const sendButton = document.getElementById('sendBtn');
+
+        const userText = inputField.value.trim();
+
+        // 1. Validation check (Khali toh nahi hai?)
+        if (userText === "") {
+            alert("Please kuch type karein!");
+            return;
+        }
+
+        // 2. Loading ON karein
+        spinner.style.display = "block";
+        sendButton.disabled = true;
+        resultDiv.innerHTML = "Thinking...";
+
+        try {
+            // 3. Gemini AI ko call karein
+            const aiOutput = await getGeminiResponse(userText);
+            
+            // 4. Result display karein
+            resultDiv.innerHTML = `<pre>${aiOutput}</pre>`;
+        } catch (error) {
+            resultDiv.innerHTML = "Error generating content.";
+        } finally {
+            // 5. Loading OFF karein
+            spinner.style.display = "none";
+            sendButton.disabled = false;
+        }
+    });
+</script>
