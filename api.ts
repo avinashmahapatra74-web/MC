@@ -367,3 +367,35 @@ export async function handleOrientation(lockType: OrientationLockType) {
         console.error("Orientation lock failed:", error);
     }
 }
+// 1. Input Field Validation
+export function validateFormInput(inputElement: HTMLInputElement, errorMsg: string): boolean {
+    if (inputElement.value.trim() === "") {
+        alert(errorMsg);
+        inputElement.focus();
+        return false;
+    }
+    return true;
+}
+
+// 2. Loading Spinner State Handler
+export function toggleLoadingState(isLoading: boolean, spinnerElement: HTMLElement, actionButton: HTMLButtonElement) {
+    if (isLoading) {
+        spinnerElement.style.display = "block";
+        actionButton.disabled = true;
+    } else {
+        spinnerElement.style.display = "none";
+        actionButton.disabled = false;
+    }
+}
+// Image Generation handler
+export async function handleImageGeneration(prompt: string): Promise<string> {
+    // Yahan aap Image Generation API ko fetch request bhejenge
+    // Example return: Image URL
+    return "https://via.placeholder.com/500?text=AI+Generated+Image";
+}
+
+// Video Generation handler
+export async function handleVideoGeneration(prompt: string): Promise<string> {
+    // Yahan aap Text-to-Video API endpoint call karenge
+    return "https://www.w3schools.com/html/mov_bbb.mp4";
+}
