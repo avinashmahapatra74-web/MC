@@ -19,9 +19,118 @@ jobs:
           unzip -o z-eye.zip
         fi
 
-    - name: Inject Native Edge-to-Edge UI & Offline Data Engine
+    - name: Inject Studio Camera & Modern Ecosystem
       run: |
-        # 1. Replace App.tsx with clean native edge-to-edge interface
+        # 1. Inject Camera Studio Component
+        cat << 'EOF' > src/components/StudioCameraViewport.tsx
+        import React, { useState, useRef, useEffect } from 'react';
+        import { X, Zap, RefreshCw, Volume2, Gauge, Sparkles, Timer, Layers, Flame } from 'lucide-react';
+
+        const DURATION_CYCLE = [15, 30, 60, 90, 180, 300]; // up to 5 minutes
+        const TEMPO_OPTIONS = [0.3, 0.5, 1.0, 2.0, 3.0];
+        const MODES = ['Frame', 'Moment', 'Flux Clip', 'Airwave'];
+
+        export const StudioCameraViewport: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+          const [durationLimit, setDurationLimit] = useState<number>(300);
+          const [tempo, setTempo] = useState<number>(1.0);
+          const [selectedMode, setSelectedMode] = useState<string>('Flux Clip');
+          const [isRecording, setIsRecording] = useState<boolean>(false);
+          const [seconds, setSeconds] = useState<number>(0);
+          const [torch, setTorch] = useState<boolean>(false);
+          const [stream, setStream] = useState<MediaStream | null>(null);
+          const timerRef = useRef<any>(null);
+
+          useEffect(() => {
+            navigator.mediaDevices?.getUserMedia({ video: { facingMode: 'environment' }, audio: true })
+              .then(setStream)
+              .catch(() => {});
+            return () => {
+              if (stream) stream.getTracks().forEach((t) => t.stop());
+              clearInterval(timerRef.current);
+            };
+          }, []);
+
+          const toggleRecord = () => {
+            if (isRecording) {
+              clearInterval(timerRef.current);
+              setIsRecording(false);
+              setSeconds(0);
+            } else {
+              setIsRecording(true);
+              timerRef.current = setInterval(() => {
+                setSeconds((s) => {
+                  if (s + 1 >= durationLimit) {
+                    toggleRecord();
+                    return durationLimit;
+                  }
+                  return s + 1;
+                });
+              }, 1000);
+            }
+          };
+
+          return (
+            <div className="fixed inset-0 z-50 bg-black flex flex-col justify-between overflow-hidden select-none">
+              <div className="absolute inset-0 z-0 flex items-center justify-center">
+                {stream ? (
+                  <video autoPlay playsInline muted ref={(n) => { if (n && stream) n.srcObject = stream; }} className="w-full h-full object-cover" />
+                ) : (
+                  <div className="text-gray-500 font-mono text-xs">Connecting Camera Hardware (60FPS)...</div>
+                )}
+              </div>
+
+              {/* Top Bar */}
+              <div className="relative z-20 px-4 pt-10 pb-3 flex items-center justify-between bg-gradient-to-b from-black/80 to-transparent">
+                <button onClick={onClose} className="w-10 h-10 rounded-full bg-black/40 border border-white/10 flex items-center justify-center text-white">
+                  <X className="w-5 h-5" />
+                </button>
+                <div className="px-3.5 py-1 rounded-full bg-black/60 border border-cyan-400/40 text-cyan-300 text-xs font-bold flex items-center space-x-1.5 shadow-lg">
+                  <Volume2 className="w-3.5 h-3.5" />
+                  <span>Acoustic Sync</span>
+                </div>
+                <button onClick={() => setTorch(!torch)} className={`w-10 h-10 rounded-full border border-white/10 flex items-center justify-center ${torch ? 'bg-yellow-400 text-black' : 'bg-black/40 text-white'}`}>
+                  <Zap className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Left Toolkit */}
+              <div className="relative z-20 ml-3 my-auto w-11 py-3 rounded-full bg-black/50 border border-white/10 flex flex-col items-center space-y-3">
+                <button onClick={() => setDurationLimit(DURATION_CYCLE[(DURATION_CYCLE.indexOf(durationLimit) + 1) % DURATION_CYCLE.length])} className="w-8 h-8 rounded-full bg-white/10 text-[10px] font-mono font-bold text-cyan-400 border border-cyan-400/40">
+                  {durationLimit >= 60 ? `${durationLimit / 60}m` : `${durationLimit}s`}
+                </button>
+                <button onClick={() => setTempo(TEMPO_OPTIONS[(TEMPO_OPTIONS.indexOf(tempo) + 1) % TEMPO_OPTIONS.length])} className="w-8 h-8 rounded-full text-[10px] font-mono font-bold text-white flex flex-col items-center justify-center">
+                  <Gauge className="w-3.5 h-3.5" />
+                  <span>{tempo}x</span>
+                </button>
+                <button className="w-8 h-8 rounded-full text-white/80 hover:text-white flex items-center justify-center">
+                  <Sparkles className="w-4 h-4 text-purple-400" />
+                </button>
+                <button className="w-8 h-8 rounded-full text-white/80 hover:text-white flex items-center justify-center">
+                  <Layers className="w-4 h-4 text-emerald-400" />
+                </button>
+              </div>
+
+              {/* Bottom Shutter & Carousel */}
+              <div className="relative z-20 pb-8 flex flex-col items-center bg-gradient-to-t from-black/90 to-transparent">
+                <div className="relative w-18 h-18 flex items-center justify-center mb-4">
+                  <button onClick={toggleRecord} className={`w-14 h-14 rounded-full transition-all flex items-center justify-center ${isRecording ? 'bg-rose-600 rounded-xl scale-90' : 'bg-gradient-to-tr from-cyan-400 to-purple-600'}`}>
+                    {isRecording && <span className="text-[9px] font-mono text-white font-bold">{seconds}s</span>}
+                  </button>
+                </div>
+                <div className="flex items-center space-x-5 overflow-x-auto px-6 py-1">
+                  {MODES.map((m) => (
+                    <button key={m} onClick={() => setSelectedMode(m)} className={`text-xs uppercase font-extrabold tracking-wider ${selectedMode === m ? 'text-cyan-400 scale-105' : 'text-gray-400'}`}>
+                      {m}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          );
+        };
+        EOF
+
+        # 2. Inject App.tsx Hooking Studio Camera & Dual-Flame Cheer
         cat << 'EOF' > src/App.tsx
         import React, { useState, useEffect } from 'react';
         import { AuthProvider, useAuth } from './context/AuthContext';
@@ -32,12 +141,11 @@ jobs:
         import { Navigation, NavTab } from './components/Navigation';
         import { FeedCard } from './components/FeedCard';
         import { CommentsSheet } from './components/CommentsSheet';
-        import { CreatePostModal } from './components/CreatePostModal';
         import { ProfileView } from './components/ProfileView';
         import { DeviceLockModal } from './components/DeviceLockModal';
         import { DeviceOptimizerModal } from './components/DeviceOptimizerModal';
         import { BigFixAIDashboard } from './components/BigFixAIDashboard';
-        import { SafetyReportModal } from './components/SafetyReportModal';
+        import { StudioCameraViewport } from './components/StudioCameraViewport';
         import { Compass } from 'lucide-react';
 
         function MainApp() {
@@ -46,31 +154,20 @@ jobs:
           const [selectedTag, setSelectedTag] = useState<string>('All');
           const [posts, setPosts] = useState<Post[]>([]);
           const [activeCommentsPost, setActiveCommentsPost] = useState<Post | null>(null);
-          const [activeReportPostId, setActiveReportPostId] = useState<string | null>(null);
-          const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
+          const [isCameraOpen, setIsCameraOpen] = useState<boolean>(false);
           const [isDeviceModalOpen, setIsDeviceModalOpen] = useState<boolean>(false);
           const [isOptimizerModalOpen, setIsOptimizerModalOpen] = useState<boolean>(false);
 
           const loadFeed = async () => {
             const res = await api.getFeed(currentUser?.id || 'u-apex', selectedTag);
-            if (res && res.posts) {
-              setPosts(res.posts);
-            }
+            if (res && res.posts) setPosts(res.posts);
           };
 
-          useEffect(() => {
-            loadFeed();
-          }, [selectedTag]);
-
-          const handleLikeToggle = async (postId: string) => {
-            await api.toggleLike(postId, currentUser?.id || 'u-apex');
-            loadFeed();
-          };
+          useEffect(() => { loadFeed(); }, [selectedTag]);
 
           const handleNavSelect = (tab: NavTab) => {
-            if (tab === 'create') {
-              setIsCreateModalOpen(true);
-            } else {
+            if (tab === 'create') setIsCameraOpen(true);
+            else {
               setCurrentTab(tab);
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }
@@ -90,13 +187,7 @@ jobs:
                 {currentTab === 'feed' && (
                   <div className="space-y-4">
                     {posts.map((post) => (
-                      <FeedCard
-                        key={post.id}
-                        post={post}
-                        onLikeToggle={handleLikeToggle}
-                        onOpenComments={(p) => setActiveCommentsPost(p)}
-                        onOpenReport={(pId) => setActiveReportPostId(pId)}
-                      />
+                      <FeedCard key={post.id} post={post} onLikeToggle={() => {}} onOpenComments={(p) => setActiveCommentsPost(p)} onOpenReport={() => {}} />
                     ))}
                   </div>
                 )}
@@ -109,11 +200,7 @@ jobs:
                     </div>
                     <div className="grid grid-cols-2 gap-2">
                       {posts.map((p, idx) => (
-                        <div
-                          key={`${p.id}-${idx}`}
-                          onClick={() => setActiveCommentsPost(p)}
-                          className="relative aspect-square rounded-xl overflow-hidden bg-[#0B0D10] border border-[#14171C]"
-                        >
+                        <div key={`${p.id}-${idx}`} onClick={() => setActiveCommentsPost(p)} className="relative aspect-square rounded-xl overflow-hidden bg-[#0B0D10] border border-[#14171C]">
                           {p.postType === 'video' ? (
                             <video src={p.media[0]?.url} className="w-full h-full object-cover" muted playsInline />
                           ) : (
@@ -126,22 +213,15 @@ jobs:
                 )}
 
                 {currentTab === 'ai' && <BigFixAIDashboard />}
-
-                {currentTab === 'profile' && (
-                  <ProfileView
-                    onOpenDeviceManager={() => setIsDeviceModalOpen(true)}
-                    onPostSelect={(post) => setActiveCommentsPost(post)}
-                  />
-                )}
+                {currentTab === 'profile' && <ProfileView onOpenDeviceManager={() => setIsDeviceModalOpen(true)} onPostSelect={(p) => setActiveCommentsPost(p)} />}
               </main>
 
               <Navigation currentTab={currentTab} onSelectTab={handleNavSelect} />
 
+              {isCameraOpen && <StudioCameraViewport onClose={() => setIsCameraOpen(false)} />}
               <CommentsSheet post={activeCommentsPost} onClose={() => setActiveCommentsPost(null)} onCommentAdded={loadFeed} />
-              <CreatePostModal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)} onPostCreated={loadFeed} />
               <DeviceLockModal isOpen={isDeviceModalOpen} onClose={() => setIsDeviceModalOpen(false)} />
               <DeviceOptimizerModal isOpen={isOptimizerModalOpen} onClose={() => setIsOptimizerModalOpen(false)} currentPlatformMode="android" onPlatformChange={() => {}} />
-              <SafetyReportModal postId={activeReportPostId} onClose={() => setActiveReportPostId(null)} />
             </div>
           );
         }
@@ -155,250 +235,6 @@ jobs:
             </AuthProvider>
           );
         }
-        EOF
-
-        # 2. Provide complete Offline Standalone Storage Engine in api.ts
-        cat << 'EOF' > src/services/api.ts
-        import { Post, Comment, User, FeatureFlag, AuditLogEntry } from '../types';
-
-        const DEFAULT_POSTS: Post[] = [
-          {
-            id: 'post-1',
-            userId: 'u-pixel',
-            postType: 'video',
-            user: {
-              id: 'u-pixel',
-              username: 'neon_artisan',
-              displayName: 'Taro Tanaka',
-              avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300',
-              isVerified: true,
-            },
-            media: [
-              {
-                id: 'm1',
-                url: 'https://assets.mixkit.co/videos/preview/mixkit-vertical-view-of-neon-sign-in-a-japanese-street-41584-large.mp4',
-                type: 'video',
-                aspectRatio: '9:16',
-                duration: 12,
-                altText: 'Tokyo Neon Vertical Reel in HDR',
-              },
-            ],
-            caption: 'Tokyo rain at 2 AM. 9:16 vertical short reel captured on 120 FPS sensor with deep AMOLED blacks. #ShortVideo #TokyoNights #AMOLED',
-            likesCount: 142,
-            commentsCount: 3,
-            hasLiked: false,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-          },
-          {
-            id: 'post-2',
-            userId: 'u-cyber',
-            postType: 'photo',
-            user: {
-              id: 'u-cyber',
-              username: 'cyber_valkyrie',
-              displayName: 'Maya Lin',
-              avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300',
-              isVerified: true,
-            },
-            media: [
-              {
-                id: 'm2',
-                url: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=1200',
-                type: 'image',
-                aspectRatio: '4:5',
-                altText: 'High-contrast 3D cybernetic sculpture portrait.',
-              },
-            ],
-            caption: 'New 4:5 portrait photo series: "Lumina Noir". Tuned specifically for zero color banding on 10-bit OLED panels. #Photo #Lumina #AMOLED',
-            likesCount: 89,
-            commentsCount: 2,
-            hasLiked: true,
-            createdAt: new Date(Date.now() - 3600000).toISOString(),
-            updatedAt: new Date(Date.now() - 3600000).toISOString(),
-          },
-          {
-            id: 'post-3',
-            userId: 'u-apex',
-            postType: 'video',
-            user: {
-              id: 'u-apex',
-              username: 'apex_shadow',
-              displayName: 'Kaelen Vance',
-              avatarUrl: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=300',
-              isVerified: true,
-            },
-            media: [
-              {
-                id: 'm3',
-                url: 'https://assets.mixkit.co/videos/preview/mixkit-cyber-city-with-neon-lights-and-flying-cars-42861-large.mp4',
-                type: 'video',
-                aspectRatio: '16:9',
-                duration: 15,
-                altText: 'Futuristic cyber city animated reel.',
-              },
-            ],
-            caption: 'Cyber City Hyper-drive: Short Video highlight reel rendered in 4K 60fps. Zero compression artifacting. #ShortVideo #Zeye #AMOLED',
-            likesCount: 230,
-            commentsCount: 4,
-            hasLiked: false,
-            createdAt: new Date(Date.now() - 7200000).toISOString(),
-            updatedAt: new Date(Date.now() - 7200000).toISOString(),
-          },
-        ];
-
-        function getStoredPosts(): Post[] {
-          const raw = localStorage.getItem('zeye_local_posts');
-          if (!raw) {
-            localStorage.setItem('zeye_local_posts', JSON.stringify(DEFAULT_POSTS));
-            return DEFAULT_POSTS;
-          }
-          try {
-            return JSON.parse(raw);
-          } catch {
-            return DEFAULT_POSTS;
-          }
-        }
-
-        export function getOrCreateDeviceId(): string {
-          let devId = localStorage.getItem('zeye_device_id');
-          if (!devId) {
-            devId = `dev-droid-${Math.random().toString(36).substring(2, 9)}`;
-            localStorage.setItem('zeye_device_id', devId);
-          }
-          return devId;
-        }
-
-        export function getDeviceModel(): string {
-          return localStorage.getItem('zeye_device_model') || 'Android AMOLED Device';
-        }
-
-        export function setDeviceModel(model: string) {
-          localStorage.setItem('zeye_device_model', model);
-        }
-
-        export const api = {
-          getFeed: async (_userId: string, tag?: string) => {
-            const all = getStoredPosts();
-            if (tag === 'Photos') return { posts: all.filter((p) => p.postType === 'photo') };
-            if (tag === 'Short Videos') return { posts: all.filter((p) => p.postType === 'video') };
-            return { posts: all };
-          },
-          toggleLike: async (postId: string, userId: string) => {
-            const all = getStoredPosts().map((p) => {
-              if (p.id === postId) {
-                const hasLiked = !p.hasLiked;
-                return { ...p, hasLiked, likesCount: hasLiked ? p.likesCount + 1 : Math.max(0, p.likesCount - 1) };
-              }
-              return p;
-            });
-            localStorage.setItem('zeye_local_posts', JSON.stringify(all));
-            const target = all.find((p) => p.id === postId);
-            return { success: true, likesCount: target?.likesCount || 0, hasLiked: target?.hasLiked || false };
-          },
-          getComments: async (postId: string) => {
-            const raw = localStorage.getItem(`zeye_comments_${postId}`);
-            return { comments: raw ? JSON.parse(raw) : [] };
-          },
-          addComment: async (postId: string, userId: string, text: string) => {
-            const raw = localStorage.getItem(`zeye_comments_${postId}`);
-            const comments: Comment[] = raw ? JSON.parse(raw) : [];
-            const newComment: Comment = {
-              id: `c-${Date.now()}`,
-              postId,
-              userId,
-              user: { id: userId, username: 'user', displayName: 'Creator', avatarUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100' },
-              text,
-              likesCount: 0,
-              hasLiked: false,
-              createdAt: new Date().toISOString(),
-            };
-            comments.push(newComment);
-            localStorage.setItem(`zeye_comments_${postId}`, JSON.stringify(comments));
-            return { success: true, comment: newComment };
-          },
-          createPost: async (postData: any) => {
-            const all = getStoredPosts();
-            const newPost: Post = {
-              id: `post-${Date.now()}`,
-              userId: postData.userId || 'u-apex',
-              postType: postData.postType || 'photo',
-              user: { id: 'u-apex', username: 'apex_shadow', displayName: 'Kaelen Vance', avatarUrl: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=300', isVerified: true },
-              media: postData.media || [],
-              caption: postData.caption || '',
-              likesCount: 0,
-              commentsCount: 0,
-              hasLiked: false,
-              createdAt: new Date().toISOString(),
-              updatedAt: new Date().toISOString(),
-            };
-            all.unshift(newPost);
-            localStorage.setItem('zeye_local_posts', JSON.stringify(all));
-            return { success: true, post: newPost };
-          },
-          getUserProfile: async (userId: string) => {
-            const all = getStoredPosts();
-            return {
-              user: {
-                id: userId,
-                username: 'apex_shadow',
-                displayName: 'Kaelen Vance',
-                email: 'kaelen@zeye.app',
-                avatarUrl: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=300',
-                bio: 'Pro FPS Athlete & OLED aesthetic curator. AMOLED blacks, zero latency.',
-                pronouns: 'he/him',
-                links: ['https://twitch.tv/apex_shadow'],
-                isPrivate: false,
-                isVerified: true,
-                age: 23,
-                isAgeGated: false,
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString(),
-              },
-              stats: { postsCount: all.length, followersCount: 1420, followingCount: 89, isFollowing: false },
-              posts: all,
-            };
-          },
-          updateProfile: async () => ({ success: true }),
-          toggleFollow: async () => ({ success: true, isFollowing: true }),
-          demoLogin: async (userId: string) => ({
-            success: true,
-            user: { id: userId, username: 'apex_shadow', displayName: 'Kaelen Vance', avatarUrl: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=300' },
-            session: { id: 'sess-1' },
-          }),
-          getSessions: async () => ({ sessions: [] }),
-          terminateSession: async () => ({ success: true }),
-          submitReport: async () => ({ success: true }),
-          exportData: async () => ({ success: true, exportData: {} }),
-          deleteAccount: async () => ({ success: true }),
-          getFlags: async () => ({ flags: [] }),
-          toggleFlag: async () => ({ success: true }),
-          getAuditLogs: async () => ({ logs: [] }),
-          aiFixCaption: async (draft: string) => ({ enhancedCaption: `${draft} #Zeye #AMOLED #Cinematic`, altText: 'High contrast visual capture', suggestedTags: ['#Zeye', '#AMOLED'] }),
-          aiClassify: async () => ({ safe: true, safetyScore: 0.99, verdict: 'Clear' }),
-          aiFixBio: async (b: string) => ({ bio: b }),
-          aiOptimizeDevice: async (p: any) => ({
-            detectedProfile: 'Dynamic AMOLED Tuned Profile',
-            hardwareSummary: '120Hz ProMotion AMOLED HDR',
-            aiBotVerdictHindi: 'Aapke phone ke liye sub-pixel true black aur zero-MB video engine optimize kar diya gaya hai.',
-            aiBotVerdictEnglish: 'Device hardware profile optimized for AMOLED display and low-data playback.',
-            installerPackage: { packageName: 'zeye-android-amoled.apk', targetPlatform: 'Android', fileFormat: 'APK', fileSizeMB: 8.4, installGuide: 'Installed' },
-          }),
-          aiCompressMedia: async (params: any) => ({
-            originalSizeMB: params.originalSizeMB || 28.5,
-            compressedSizeMB: 0.75,
-            savedPercent: '97.4%',
-            compressionMode: params.compressionMode || 'ultra_saver',
-            codec: 'AV1 Neural Quantization',
-            bitrateKbps: 180,
-            perceptualQualityScore: 98.6,
-            viewerStreamCostMB: 0.08,
-            aiAdviceHindi: 'Reel 97.4% compress ho gayi hai. HD play hogi lekin data sirf 0.08 MB lagega!',
-          }),
-          askAppGuide: async () => ({ answer: 'Z-eye Sentinel AI ready.', speechText: 'Z-eye Sentinel ready.' }),
-          generateAiMedia: async () => ({ id: 'gen-1', url: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=1200' }),
-          generateAiMusic: async () => ({ id: 'm-1', title: 'Cyber Pulse', bpm: 128 }),
-        };
         EOF
 
     - name: Setup Node.js
