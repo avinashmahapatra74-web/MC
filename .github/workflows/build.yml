@@ -39,7 +39,8 @@ jobs:
     - name: Convert to Android & Build APK
       run: |
         npm install --save @capacitor/core @capacitor/cli @capacitor/android --force
-        npx cap init "Z-eye" "com.zeye.app" --web-dir dist
+        rm -f capacitor.config.ts
+        echo '{"appId": "com.zeye.app", "appName": "Z-eye", "webDir": "dist"}' > capacitor.config.json
         npx cap add android
         npx cap sync android
         cd android
