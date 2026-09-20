@@ -10,26 +10,116 @@
             color: #ffffff;
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            overflow-x: hidden;
         }
+        /* Sticky Top Header */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 12px 16px;
-            border-bottom: 1px solid #222;
+            border-bottom: 1px solid #1a1a1a;
+            background: #000;
+            position: sticky;
+            top: 0;
+            z-index: 999;
         }
         .app-view {
-            padding: 15px;
             padding-bottom: 80px;
         }
-        /* Profile Top & Stats Styles */
+        /* Stories Bar */
+        .stories-container {
+            display: flex;
+            gap: 15px;
+            padding: 10px 15px;
+            overflow-x: auto;
+            border-bottom: 1px solid #1a1a1a;
+            white-space: nowrap;
+        }
+        .story-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            color: #aaa;
+            cursor: pointer;
+        }
+        .story-ring {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .story-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #222;
+            border: 2px solid #000;
+            object-fit: cover;
+        }
+        /* Feed Posts */
+        .post-card {
+            border-bottom: 1px solid #1a1a1a;
+            margin-bottom: 15px;
+        }
+        .post-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 15px;
+        }
+        .post-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .post-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #333;
+        }
+        .post-media {
+            width: 100%;
+            height: 380px;
+            background: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 14px;
+            object-fit: cover;
+        }
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 15px;
+            font-size: 22px;
+        }
+        .post-actions-left {
+            display: flex;
+            gap: 15px;
+        }
+        .post-details {
+            padding: 0 15px 15px 15px;
+            font-size: 13px;
+        }
+        /* Profile & Dashboard Layout */
+        .profile-container {
+            padding: 15px;
+        }
         .profile-header-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
-            border-bottom: 1px solid #222;
-            padding-bottom: 10px;
         }
         .profile-info-section {
             display: flex;
@@ -38,8 +128,8 @@
             margin-bottom: 15px;
         }
         .profile-pic {
-            width: 75px;
-            height: 75px;
+            width: 78px;
+            height: 78px;
             border-radius: 50%;
             background: #333;
             border: 2px solid #555;
@@ -61,6 +151,7 @@
         .profile-bio {
             font-size: 14px;
             margin-bottom: 15px;
+            line-height: 1.4;
         }
         .dashboard-box {
             background: #121212;
@@ -86,12 +177,67 @@
             cursor: pointer;
             text-align: center;
         }
-        /* Follower Dashboard Styles */
+        /* Highlights */
+        .highlights-bar {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #1a1a1a;
+            margin-bottom: 15px;
+        }
+        .highlight-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 11px;
+            color: #aaa;
+            gap: 5px;
+        }
+        .highlight-circle {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            border: 1px solid #444;
+            background: #111;
+        }
+        /* Profile Content Tabs */
+        .profile-content-tabs {
+            display: flex;
+            justify-content: space-around;
+            border-bottom: 1px solid #1a1a1a;
+            margin-bottom: 2px;
+            font-size: 18px;
+            color: #777;
+        }
+        .profile-content-tabs .active-profile-tab {
+            color: #fff;
+            border-bottom: 1px solid #fff;
+            padding-bottom: 8px;
+            margin-bottom: -1px;
+        }
+        /* Grid Posts */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+        }
+        .grid-tile {
+            width: 100%;
+            aspect-ratio: 1;
+            background: #121212;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+            font-size: 12px;
+        }
+        /* Follower Management Dashboard Styles */
         .follower-tabs {
             display: flex;
             gap: 20px;
             overflow-x: auto;
-            border-bottom: 1px solid #222;
+            border-bottom: 1px solid #1a1a1a;
             padding-bottom: 10px;
             margin-bottom: 15px;
             font-size: 14px;
@@ -185,7 +331,7 @@
         .action-btn.primary {
             background: #0095f6;
         }
-        /* Settings Menu Styling */
+        /* Settings & Activity Styles */
         .settings-search {
             background: #121212;
             padding: 10px 15px;
@@ -195,7 +341,7 @@
             border: 1px solid #222;
         }
         .settings-section-title {
-            font-size: 13px;
+            font-size: 12px;
             color: #888;
             margin: 20px 0 8px 5px;
             text-transform: uppercase;
@@ -221,9 +367,42 @@
         .settings-right {
             color: #888;
             font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+        }
+        /* AI Workspace Styles */
+        .ai-chip {
+            background: #1a1a1a;
+            color: #ddd;
+            border: 1px solid #333;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .ai-chip:hover {
+            background: #333;
+        }
+        .chat-bubble-user {
+            background: #0095f6;
+            color: #fff;
+            padding: 10px 14px;
+            border-radius: 12px 12px 2px 12px;
+            font-size: 13px;
+            max-width: 80%;
+            align-self: flex-end;
+            margin-bottom: 8px;
+        }
+        .chat-bubble-ai {
+            background: #1a1a1a;
+            color: #ddd;
+            padding: 10px 14px;
+            border-radius: 12px 12px 12px 2px;
+            font-size: 13px;
+            max-width: 85%;
+            align-self: flex-start;
+            border: 1px solid #2a2a2a;
+            margin-bottom: 8px;
+            line-height: 1.4;
         }
         /* Bottom Navigation Bar */
         .bottom-nav {
@@ -233,7 +412,7 @@
             width: 100%;
             height: 55px;
             background-color: #000000;
-            border-top: 1px solid #222;
+            border-top: 1px solid #1a1a1a;
             display: flex;
             justify-content: space-around;
             align-items: center;
@@ -242,7 +421,7 @@
         .bottom-nav a {
             color: #ffffff;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 22px;
         }
     </style>
 </head>
@@ -250,47 +429,163 @@
 
     <!-- Top Header -->
     <header>
-        <h2 style="margin: 0; font-size: 20px; font-weight: bold;">Z-Eye</h2>
-        <div style="display: flex; gap: 15px;">
-            <span>⚡</span>
-            <span>✨</span>
+        <h2 style="margin: 0; font-size: 22px; font-weight: bold; font-family: cursive; letter-spacing: 0.5px;">Z-Eye</h2>
+        <div style="display: flex; gap: 20px; font-size: 20px; cursor: pointer;">
+            <span id="nav-messages" title="Messages">💬</span>
+            <span title="Notifications">❤️</span>
         </div>
     </header>
 
     <!-- Main Dynamic Content Views -->
-    <main>
+    <main class="app-view">
         
-        <!-- 1. Feed Section -->
-        <div id="view-feed" class="app-view" style="display: block; text-align: center;">
-            <h3>🏠 Feed</h3>
-            <p>Your media feed will appear here.</p>
+        <!-- 1. FEED VIEW -->
+        <div id="view-feed" style="display: block;">
+            <!-- Stories Bar -->
+            <div class="stories-container">
+                <div class="story-item">
+                    <div class="story-ring" style="background: #444;"><div class="story-img" style="background: #222; display: flex; align-items: center; justify-content: center; font-size: 18px;">+</div></div>
+                    <span>Your story</span>
+                </div>
+                <div class="story-item"><div class="story-ring"><div class="story-img"></div></div><span>waifusdream</span></div>
+                <div class="story-item"><div class="story-ring"><div class="story-img"></div></div><span>sirya_baby</span></div>
+                <div class="story-item"><div class="story-ring"><div class="story-img"></div></div><span>zixeg_03</span></div>
+                <div class="story-item"><div class="story-ring"><div class="story-img"></div></div><span>harshing...</span></div>
+            </div>
+
+            <!-- Feed Post 1 -->
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="post-user">
+                        <div class="post-avatar"></div>
+                        <span>zixeg_03</span>
+                    </div>
+                    <span>•••</span>
+                </div>
+                <div class="post-media">[ High Quality Feed Reel / Image ]</div>
+                <div class="post-actions">
+                    <div class="post-actions-left">
+                        <span>🤍</span><span>💬</span><span>↗️</span>
+                    </div>
+                    <span>🔖</span>
+                </div>
+                <div class="post-details">
+                    <div style="font-weight: bold; margin-bottom: 4px;">2,410 likes</div>
+                    <div><b>zixeg_03</b> Papurenn💀 Exploring advanced UI modules inside Z-Eye web app.</div>
+                </div>
+            </div>
+
+            <!-- Feed Post 2 -->
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="post-user">
+                        <div class="post-avatar"></div>
+                        <span>creator_insights</span>
+                    </div>
+                    <span>•••</span>
+                </div>
+                <div class="post-media">[ Video Stream Player ]</div>
+                <div class="post-actions">
+                    <div class="post-actions-left">
+                        <span>🤍</span><span>💬</span><span>↗️</span>
+                    </div>
+                    <span>🔖</span>
+                </div>
+                <div class="post-details">
+                    <div style="font-weight: bold; margin-bottom: 4px;">850 likes</div>
+                    <div><b>creator_insights</b> Powered by Gemini Pro AI Studio. ✨</div>
+                </div>
+            </div>
         </div>
 
-        <!-- 2. Explore Section -->
-        <div id="view-explore" class="app-view" style="display: none; text-align: center;">
-            <h3>🔍 Explore</h3>
-            <p>Explore trending content here.</p>
+        <!-- 2. EXPLORE VIEW -->
+        <div id="view-explore" style="display: none; padding: 10px;">
+            <div class="dashboard-search">
+                <span>🔍</span>
+                <input type="text" placeholder="Search reels, tags, users...">
+            </div>
+            <div class="profile-grid">
+                <div class="grid-tile" style="aspect-ratio: 1/2; grid-row: span 2;">Reel 1</div>
+                <div class="grid-tile">Explore 2</div>
+                <div class="grid-tile">Explore 3</div>
+                <div class="grid-tile">Explore 4</div>
+                <div class="grid-tile" style="aspect-ratio: 1/2; grid-row: span 2;">Reel 2</div>
+                <div class="grid-tile">Explore 5</div>
+                <div class="grid-tile">Explore 6</div>
+            </div>
         </div>
 
-        <!-- 3. Post Section -->
-        <div id="view-post" class="app-view" style="display: none; text-align: center;">
-            <h3>➕ Create Post</h3>
-            <p>Upload photos or short videos.</p>
+        <!-- 3. POST CREATION VIEW -->
+        <div id="view-post" style="display: none; text-align: center; padding: 40px 20px;">
+            <h3>➕ Create New Post</h3>
+            <p style="color: #888; font-size: 13px;">Publish photos, stories, reels or live broadcasts.</p>
+            <div style="border: 2px dashed #444; padding: 40px; border-radius: 12px; margin: 20px 0; color: #aaa;">
+                📂 Drag and Drop Media Files Here
+            </div>
+            <button style="background: #0095f6; color: #fff; border: none; padding: 10px 25px; border-radius: 6px; font-weight: bold;">Share to Z-Eye Feed</button>
         </div>
 
-        <!-- 4. AI Section -->
-        <div id="view-ai" class="app-view" style="display: none; text-align: center;">
-            <h3>✨ Gemini AI Assistant</h3>
-            <input type="text" id="userInput" placeholder="Ask Gemini..." style="width: 80%; padding: 8px; margin-top: 10px; background: #111; color: #fff; border: 1px solid #333;" />
-            <br>
-            <button id="sendBtn" style="padding: 8px 15px; margin-top: 10px; background: #0095f6; color: #fff; border: none; border-radius: 4px;">Generate</button>
-            <div id="outputResult" style="margin-top: 15px; color: #ccc;"></div>
-        </div>
-
-        <!-- 5. Profile & Detailed Dashboard Section -->
-        <div id="view-profile" class="app-view" style="display: none;">
+        <!-- 4. ADVANCED GEMINI AI PRO STUDIO VIEW -->
+        <div id="view-ai" style="display: none; padding: 15px; display: flex; flex-direction: column; height: calc(100vh - 130px);">
+            <div style="text-align: center; margin-bottom: 12px;">
+                <h3 style="margin: 0; color: #0095f6;">✨ Gemini AI Pro Studio</h3>
+                <p style="color: #888; font-size: 12px; margin-top: 4px;">Your advanced creative companion for Z-Eye</p>
+            </div>
             
-            <!-- Profile Main Content -->
+            <!-- Quick Chips -->
+            <div style="display: flex; gap: 8px; overflow-x: auto; margin-bottom: 12px; padding-bottom: 4px;">
+                <button class="ai-chip" onclick="triggerPreset('Generate an aesthetic Instagram caption for my latest photo')">📝 Captions</button>
+                <button class="ai-chip" onclick="triggerPreset('Give me 10 trending viral hashtags for reach')">#️⃣ Hashtags</button>
+                <button class="ai-chip" onclick="triggerPreset('Write a professional and catchy profile bio')">👤 Bio Ideas</button>
+                <button class="ai-chip" onclick="triggerPreset('Suggest 3 creative concepts for reels')">🎬 Reel Ideas</button>
+            </div>
+
+            <!-- Chat History Box -->
+            <div id="aiChatContainer" style="background: #0a0a0a; border: 1px solid #222; border-radius: 12px; flex: 1; overflow-y: auto; padding: 12px; margin-bottom: 12px; display: flex; flex-direction: column;">
+                <div class="chat-bubble-ai">
+                    👋 Hello! Main aapka <b>Gemini AI Pro</b> assistant hoon. Aap mujhse koi bhi creative content generate karwa sakte hain, captions likhwa sakte hain ya coding tips le sakte hain!
+                </div>
+            </div>
+
+            <!-- Input Bar -->
+            <div style="display: flex; gap: 8px;">
+                <input type="text" id="aiUserInput" placeholder="Ask Gemini Pro anything..." style="flex: 1; padding: 12px; background: #111; color: #fff; border: 1px solid #333; border-radius: 8px; outline: none; font-size: 14px;" />
+                <button id="aiSendBtn" style="background: #0095f6; color: #fff; border: none; padding: 0 18px; border-radius: 8px; font-weight: bold; cursor: pointer;">Send</button>
+            </div>
+        </div>
+
+        <!-- 5. MESSAGES (INBOX) VIEW -->
+        <div id="view-messages" style="display: none; padding: 15px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 style="margin: 0;">single.boy.as.insta.in ▾</h3>
+                <span id="backToFeed" style="color: #0095f6; cursor: pointer; font-size: 14px; font-weight: bold;">Back</span>
+            </div>
+            <div class="dashboard-search">
+                <span>🔍</span>
+                <input type="text" placeholder="Search chats and messages">
+            </div>
+            <div class="settings-item">
+                <div class="settings-left"><div class="post-avatar" style="background: linear-gradient(45deg, #f09433, #dc2743);"></div><div><b>Gemini AI Pro</b><div style="font-size:12px; color:#888;">Online & ready to assist...</div></div></div>
+                <div class="settings-right" style="color:#0095f6;">AI</div>
+            </div>
+            <div class="settings-item">
+                <div class="settings-left"><div class="post-avatar"></div><div><b>mahapatra1813</b><div style="font-size:12px; color:#888;">Active yesterday</div></div></div>
+                <div class="settings-right"></div>
+            </div>
+            <div class="settings-item">
+                <div class="settings-left"><div class="post-avatar"></div><div><b>Ruhi Sarma</b><div style="font-size:12px; color:#888;">_shaksam_bhai_ka_fans_1</div></div></div>
+                <div class="settings-right"></div>
+            </div>
+            <div class="settings-item">
+                <div class="settings-left"><div class="post-avatar"></div><div><b>jitu.naik7928</b><div style="font-size:12px; color:#888;">Active now</div></div></div>
+                <div class="settings-right" style="width: 8px; height: 8px; background: #00ff00; border-radius: 50%;"></div>
+            </div>
+        </div>
+
+        <!-- 6. PROFILE & DETAILED DASHBOARD VIEW -->
+        <div id="view-profile" style="display: none;" class="profile-container">
+            
+            <!-- Profile Main Content Dashboard -->
             <div id="profile-dashboard-content">
                 <div class="profile-header-top">
                     <span style="font-weight: bold; font-size: 16px;">single.boy.as.insta.in ▾</span>
@@ -304,18 +599,9 @@
                 <div class="profile-info-section">
                     <div class="profile-pic"></div>
                     <div class="profile-stats">
-                        <div>
-                            <div class="stat-num">44</div>
-                            <div class="stat-label">posts</div>
-                        </div>
-                        <div>
-                            <div class="stat-num">215</div>
-                            <div class="stat-label">followers</div>
-                        </div>
-                        <div>
-                            <div class="stat-num">525</div>
-                            <div class="stat-label">following</div>
-                        </div>
+                        <div><div class="stat-num">44</div><div class="stat-label">posts</div></div>
+                        <div><div class="stat-num">215</div><div class="stat-label">followers</div></div>
+                        <div><div class="stat-num">525</div><div class="stat-label">following</div></div>
                     </div>
                 </div>
 
@@ -336,8 +622,16 @@
                     <button class="profile-btn">Share profile</button>
                 </div>
 
-                <!-- Follower Management Section -->
-                <div style="border-top: 1px solid #222; padding-top: 15px;">
+                <!-- Highlights Bar -->
+                <div class="highlights-bar">
+                    <div class="highlight-item"><div class="highlight-circle"></div><span>New</span></div>
+                    <div class="highlight-item"><div class="highlight-circle"></div><span>Music</span></div>
+                    <div class="highlight-item"><div class="highlight-circle"></div><span>Edits</span></div>
+                    <div class="highlight-item"><div class="highlight-circle"></div><span>Map</span></div>
+                </div>
+
+                <!-- Follower Management Tools -->
+                <div style="margin-bottom: 20px;">
                     <div class="follower-tabs">
                         <span class="active-tab">215 Followers</span>
                         <span>525 Following</span>
@@ -347,7 +641,7 @@
 
                     <div class="dashboard-search">
                         <span>🔍</span>
-                        <input type="text" placeholder="Search">
+                        <input type="text" placeholder="Search followers">
                     </div>
 
                     <div style="font-size: 13px; color: #888; margin-bottom: 10px;">Categories</div>
@@ -368,6 +662,7 @@
                         </div>
                     </div>
 
+                    <!-- User List Breakdown -->
                     <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0 10px 0; font-size: 13px; color: #888;">
                         <span>Sorted by Default</span>
                         <span>⇅</span>
@@ -375,7 +670,7 @@
 
                     <div class="user-list-item">
                         <div class="user-info">
-                            <div class="user-avatar" style="background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);"></div>
+                            <div class="user-avatar" style="background: linear-gradient(45deg, #f09433, #dc2743);"></div>
                             <div>
                                 <div class="user-name">zixeg_03</div>
                                 <div class="user-sub">Papurenn💀</div>
@@ -405,6 +700,23 @@
                         </div>
                         <button class="action-btn primary">Follow back</button>
                     </div>
+                </div>
+
+                <!-- Profile Content Tabs -->
+                <div class="profile-content-tabs">
+                    <span class="active-profile-tab">🔲</span>
+                    <span>🎬</span>
+                    <span>🏷️</span>
+                </div>
+
+                <!-- Grid Posts -->
+                <div class="profile-grid">
+                    <div class="grid-tile">Post 1</div>
+                    <div class="grid-tile">Post 2</div>
+                    <div class="grid-tile">Post 3</div>
+                    <div class="grid-tile">Post 4</div>
+                    <div class="grid-tile">Post 5</div>
+                    <div class="grid-tile">Post 6</div>
                 </div>
             </div>
 
@@ -451,20 +763,21 @@
 
     <!-- Bottom Navigation Bar -->
     <nav class="bottom-nav">
-        <a href="#" id="nav-feed">🏠 Feed</a>
-        <a href="#" id="nav-explore">🔍 Explore</a>
-        <a href="#" id="nav-post">➕ Post</a>
-        <a href="#" id="nav-ai">✨ AI</a>
-        <a href="#" id="nav-profile">👤 Profile</a>
+        <a href="#" id="nav-feed" title="Feed">🏠</a>
+        <a href="#" id="nav-explore" title="Explore">🔍</a>
+        <a href="#" id="nav-post" title="Create Post">➕</a>
+        <a href="#" id="nav-ai" title="Gemini AI Pro">✨</a>
+        <a href="#" id="nav-profile" title="Profile">👤</a>
     </nav>
 
-    <!-- Script Logic for Tab Switching & Settings Toggle -->
+    <!-- JavaScript Logic -->
     <script>
         const views = {
             feed: document.getElementById('view-feed'),
             explore: document.getElementById('view-explore'),
             post: document.getElementById('view-post'),
             ai: document.getElementById('view-ai'),
+            messages: document.getElementById('view-messages'),
             profile: document.getElementById('view-profile')
         };
 
@@ -482,6 +795,8 @@
         document.getElementById('nav-post').addEventListener('click', (e) => { e.preventDefault(); switchView('post'); });
         document.getElementById('nav-ai').addEventListener('click', (e) => { e.preventDefault(); switchView('ai'); });
         document.getElementById('nav-profile').addEventListener('click', (e) => { e.preventDefault(); switchView('profile'); });
+        document.getElementById('nav-messages').addEventListener('click', (e) => { e.preventDefault(); switchView('messages'); });
+        document.getElementById('backToFeed').addEventListener('click', () => { switchView('feed'); });
 
         // Settings gear icon toggle logic inside Profile tab
         const openSettingsIcon = document.getElementById('openSettingsIcon');
@@ -499,6 +814,50 @@
                 openSettingsIcon.textContent = '⚙️'; 
             }
         });
+
+        // Advanced Gemini Pro AI Studio Logic
+        const chatContainer = document.getElementById('aiChatContainer');
+        const aiUserInput = document.getElementById('aiUserInput');
+        const aiSendBtn = document.getElementById('aiSendBtn');
+
+        function appendMessage(text, sender) {
+            const bubble = document.createElement('div');
+            bubble.className = sender === 'user' ? 'chat-bubble-user' : 'chat-bubble-ai';
+            bubble.innerHTML = text;
+            chatContainer.appendChild(bubble);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function handleAISubmit() {
+            const query = aiUserInput.value.trim();
+            if(!query) return;
+
+            appendMessage(query, 'user');
+            aiUserInput.value = '';
+
+            // Simulated intelligent response
+            setTimeout(() => {
+                let aiReply = `Gemini Pro analysis for "<b>${query}</b>":<br>✅ High engagement potential detected.<br>💡 Recommendation: Pair this with vibrant visuals and relevant tags for maximum reach on Z-Eye!`;
+                if(query.toLowerCase().includes('caption')) {
+                    aiReply = `📝 <b>Generated Caption:</b><br>"Building dreams line by line, frame by frame. 🚀✨ #ZEye #DeveloperLife #Innovation"`;
+                } else if(query.toLowerCase().includes('hashtag')) {
+                    aiReply = `#️⃣ <b>Trending Hashtags:</b><br>#ZEyeApp #CreatorStudio #ViralReels #TechCommunity #ExplorePage`;
+                } else if(query.toLowerCase().includes('bio')) {
+                    aiReply = `👤 <b>Suggested Bio:</b><br>⚡ Creator & Developer<br>🌌 Exploring the digital frontier with Z-Eye.`;
+                }
+                appendMessage(aiReply, 'ai');
+            }, 700);
+        }
+
+        aiSendBtn.addEventListener('click', handleAISubmit);
+        aiUserInput.addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') handleAISubmit();
+        });
+
+        window.triggerPreset = function(presetText) {
+            aiUserInput.value = presetText;
+            handleAISubmit();
+        }
     </script>
 </body>
 </html>
