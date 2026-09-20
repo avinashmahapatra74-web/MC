@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Z-Eye</title>
+    <title>Z-Eye - AI Creator Studio</title>
     <style>
         body {
             background-color: #000000;
@@ -170,7 +170,6 @@
             cursor: pointer;
             text-align: center;
         }
-        /* Profile Content Tabs */
         .profile-content-tabs {
             display: flex;
             justify-content: space-around;
@@ -185,7 +184,6 @@
             padding-bottom: 8px;
             margin-bottom: -1px;
         }
-        /* Grid Posts */
         .profile-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -200,6 +198,43 @@
             justify-content: center;
             color: #555;
             font-size: 12px;
+        }
+        /* AI Workspace Styles */
+        .ai-chip {
+            background: #1a1a1a;
+            color: #ddd;
+            border: 1px solid #333;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .ai-chip:hover {
+            background: #0095f6;
+            color: #fff;
+        }
+        .chat-bubble-user {
+            background: #0095f6;
+            color: #fff;
+            padding: 10px 14px;
+            border-radius: 12px 12px 2px 12px;
+            font-size: 13px;
+            max-width: 80%;
+            align-self: flex-end;
+            margin-bottom: 8px;
+        }
+        .chat-bubble-ai {
+            background: #1a1a1a;
+            color: #ddd;
+            padding: 10px 14px;
+            border-radius: 12px 12px 12px 2px;
+            font-size: 13px;
+            max-width: 85%;
+            align-self: flex-start;
+            border: 1px solid #2a2a2a;
+            margin-bottom: 8px;
+            line-height: 1.4;
         }
         /* Bottom Navigation Bar */
         .bottom-nav {
@@ -236,9 +271,8 @@
     <!-- Main Dynamic Content Views -->
     <main class="app-view">
         
-        <!-- 1. FEED VIEW (Z-Eye Official Only) -->
+        <!-- 1. FEED VIEW -->
         <div id="view-feed" style="display: block;">
-            <!-- Stories Bar -->
             <div class="stories-container">
                 <div class="story-item">
                     <div class="story-ring" style="background: #444;"><div class="story-img" style="background: #222; display: flex; align-items: center; justify-content: center; font-size: 18px;">+</div></div>
@@ -247,7 +281,6 @@
                 <div class="story-item"><div class="story-ring"><div class="story-img"></div></div><span>z_eye_official</span></div>
             </div>
 
-            <!-- Official Z-Eye Post -->
             <div class="post-card">
                 <div class="post-header">
                     <div class="post-user">
@@ -265,7 +298,7 @@
                 </div>
                 <div class="post-details">
                     <div style="font-weight: bold; margin-bottom: 4px;">1 like</div>
-                    <div><b>z_eye_official</b> Exploring official Z-Eye feed modules.</div>
+                    <div><b>z_eye_official</b> Exploring AI Studio features inside Z-Eye.</div>
                 </div>
             </div>
         </div>
@@ -276,7 +309,7 @@
                 <span>🔍</span>
                 <input type="text" placeholder="Search reels, tags..." style="background: transparent; border: none; color: #fff; width: 100%; outline: none;">
             </div>
-            <div style="text-align: center; color: #666; padding: 50px;">No explore items yet. Upload media to populate.</div>
+            <div style="text-align: center; color: #666; padding: 50px;">No explore items yet. Use AI Studio to generate media.</div>
         </div>
 
         <!-- 3. POST CREATION VIEW -->
@@ -289,7 +322,36 @@
             <button style="background: #0095f6; color: #fff; border: none; padding: 10px 25px; border-radius: 6px; font-weight: bold;">Share to Z-Eye Feed</button>
         </div>
 
-        <!-- 4. PROFILE VIEW -->
+        <!-- 4. ADVANCED AI CREATOR STUDIO VIEW -->
+        <div id="view-ai" style="display: none; padding: 15px; display: flex; flex-direction: column; height: calc(100vh - 130px);">
+            <div style="text-align: center; margin-bottom: 10px;">
+                <h3 style="margin: 0; color: #0095f6;">✨ Z-Eye AI Creator Studio</h3>
+                <p style="color: #888; font-size: 12px; margin-top: 2px;">Generate Photos, Videos, Captions, Hashtags & Keywords</p>
+            </div>
+            
+            <!-- Quick Feature Chips -->
+            <div style="display: flex; gap: 8px; overflow-x: auto; margin-bottom: 10px; padding-bottom: 4px;">
+                <button class="ai-chip" onclick="triggerPreset('Generate an AI Photo prompt for a futuristic city at night')">📸 Photo Prompt</button>
+                <button class="ai-chip" onclick="triggerPreset('Generate an AI Video script and prompt for a cinematic reel')">🎥 Video Prompt</button>
+                <button class="ai-chip" onclick="triggerPreset('Write a catchy Instagram caption with keywords')">📝 Caption & Keywords</button>
+                <button class="ai-chip" onclick="triggerPreset('Give me 15 viral hashtags for max reach')">#️⃣ Hashtags</button>
+            </div>
+
+            <!-- Chat / Generation Output Box -->
+            <div id="aiChatContainer" style="background: #0a0a0a; border: 1px solid #222; border-radius: 12px; flex: 1; overflow-y: auto; padding: 12px; margin-bottom: 10px; display: flex; flex-direction: column;">
+                <div class="chat-bubble-ai">
+                    👋 Welcome to <b>Z-Eye AI Studio</b>! Type your prompt below or select a chip to generate <b>Photos, Videos, Captions, Hashtags, or Keywords</b> instantly.
+                </div>
+            </div>
+
+            <!-- Input Bar -->
+            <div style="display: flex; gap: 8px;">
+                <input type="text" id="aiUserInput" placeholder="Enter prompt for photo, video, caption, hashtags..." style="flex: 1; padding: 12px; background: #111; color: #fff; border: 1px solid #333; border-radius: 8px; outline: none; font-size: 13px;" />
+                <button id="aiSendBtn" style="background: #0095f6; color: #fff; border: none; padding: 0 16px; border-radius: 8px; font-weight: bold; cursor: pointer;">Generate</button>
+            </div>
+        </div>
+
+        <!-- 5. PROFILE VIEW -->
         <div id="view-profile" style="display: none;" class="profile-container">
             <div class="profile-header-top">
                 <span style="font-weight: bold; font-size: 16px;">z_eye_official ▾</span>
@@ -326,11 +388,12 @@
 
     </main>
 
-    <!-- Bottom Navigation Bar (AI Icon Removed) -->
+    <!-- Bottom Navigation Bar (AI Included) -->
     <nav class="bottom-nav">
         <a href="#" id="nav-feed" title="Feed">🏠</a>
         <a href="#" id="nav-explore" title="Explore">🔍</a>
         <a href="#" id="nav-post" title="Create Post">➕</a>
+        <a href="#" id="nav-ai" title="AI Studio">✨</a>
         <a href="#" id="nav-profile" title="Profile">👤</a>
     </nav>
 
@@ -340,6 +403,7 @@
             feed: document.getElementById('view-feed'),
             explore: document.getElementById('view-explore'),
             post: document.getElementById('view-post'),
+            ai: document.getElementById('view-ai'),
             profile: document.getElementById('view-profile')
         };
 
@@ -355,7 +419,56 @@
         document.getElementById('nav-feed').addEventListener('click', (e) => { e.preventDefault(); switchView('feed'); });
         document.getElementById('nav-explore').addEventListener('click', (e) => { e.preventDefault(); switchView('explore'); });
         document.getElementById('nav-post').addEventListener('click', (e) => { e.preventDefault(); switchView('post'); });
+        document.getElementById('nav-ai').addEventListener('click', (e) => { e.preventDefault(); switchView('ai'); });
         document.getElementById('nav-profile').addEventListener('click', (e) => { e.preventDefault(); switchView('profile'); });
+
+        // AI Studio Logic
+        const chatContainer = document.getElementById('aiChatContainer');
+        const aiUserInput = document.getElementById('aiUserInput');
+        const aiSendBtn = document.getElementById('aiSendBtn');
+
+        function appendMessage(text, sender) {
+            const bubble = document.createElement('div');
+            bubble.className = sender === 'user' ? 'chat-bubble-user' : 'chat-bubble-ai';
+            bubble.innerHTML = text;
+            chatContainer.appendChild(bubble);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function handleAISubmit() {
+            const query = aiUserInput.value.trim();
+            if(!query) return;
+
+            appendMessage(query, 'user');
+            aiUserInput.value = '';
+
+            setTimeout(() => {
+                let aiReply = `🤖 <b>AI Analysis for:</b> "${query}"<br>✨ <b>Generated Keywords:</b> zeye, creator, innovation, futuristic, digital.<br>📝 <b>Generated Caption:</b> "Pushing boundaries with next-gen creativity. 🚀✨"`;
+                
+                const lowerQ = query.toLowerCase();
+                if(lowerQ.includes('photo') || lowerQ.includes('image')) {
+                    aiReply = `📸 <b>AI Photo Generation Prompt:</b><br>"Cinematic ultra-realistic portrait, neon cyberpunk lighting, 8k resolution, highly detailed --ar 9:16"<br><i>[Status: Photo prompt optimized & ready to render]</i>`;
+                } else if(lowerQ.includes('video') || lowerQ.includes('reel')) {
+                    aiReply = `🎥 <b>AI Video Generation Script & Prompt:</b><br><b>Prompt:</b> "Smooth drone shot sweeping over a futuristic neon city at twilight, 4k 60fps."<br><b>Script Idea:</b> Hook (0-3s) -> Fast-paced transition -> Main showcase.`;
+                } else if(lowerQ.includes('hashtag')) {
+                    aiReply = `#️⃣ <b>Generated Viral Hashtags:</b><br>#ZEyeAI #ContentCreator #AIArt #ViralReels #TechTrends #DigitalArt #CreatorEconomy`;
+                } else if(lowerQ.includes('caption') || lowerQ.includes('keyword')) {
+                    aiReply = `📝 <b>Optimized Caption & Keywords:</b><br><b>Caption:</b> "Transforming imagination into reality through code and design. 💻✨"<br><b>Keywords:</b> web app, ai studio, digital creator, z-eye.`;
+                }
+                
+                appendMessage(aiReply, 'ai');
+            }, 800);
+        }
+
+        aiSendBtn.addEventListener('click', handleAISubmit);
+        aiUserInput.addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') handleAISubmit();
+        });
+
+        window.triggerPreset = function(presetText) {
+            aiUserInput.value = presetText;
+            handleAISubmit();
+        }
     </script>
 </body>
 </html>
