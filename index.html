@@ -22,13 +22,168 @@
             padding: 15px;
             padding-bottom: 80px;
         }
-        .profile-header {
+        /* Profile Top & Stats Styles */
+        .profile-header-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border-bottom: 1px solid #222;
             padding-bottom: 10px;
+        }
+        .profile-info-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        .profile-pic {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            background: #333;
+            border: 2px solid #555;
+            object-fit: cover;
+        }
+        .profile-stats {
+            display: flex;
+            gap: 20px;
+            text-align: center;
+        }
+        .stat-num {
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #aaa;
+        }
+        .profile-bio {
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .dashboard-box {
+            background: #121212;
+            border: 1px solid #222;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+        .profile-actions {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .profile-btn {
+            flex: 1;
+            background: #262626;
+            color: #fff;
+            border: none;
+            padding: 8px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            text-align: center;
+        }
+        /* Follower Dashboard Styles */
+        .follower-tabs {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            border-bottom: 1px solid #222;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #888;
+            white-space: nowrap;
+        }
+        .follower-tabs .active-tab {
+            color: #fff;
+            font-weight: bold;
+            border-bottom: 2px solid #fff;
+            padding-bottom: 10px;
+            margin-bottom: -11px;
+        }
+        .dashboard-search {
+            background: #121212;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            color: #888;
+            border: 1px solid #222;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .dashboard-search input {
+            background: transparent;
+            border: none;
+            color: #fff;
+            width: 100%;
+            outline: none;
+            font-size: 14px;
+        }
+        .category-box {
+            background: #111;
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            border: 1px solid #222;
+        }
+        .category-icon {
+            width: 40px;
+            height: 40px;
+            background: #262626;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        .user-list-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #111;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: #333;
+            object-fit: cover;
+        }
+        .user-name {
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .user-sub {
+            font-size: 12px;
+            color: #888;
+        }
+        .action-btn {
+            background: #262626;
+            color: #fff;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .action-btn.primary {
+            background: #0095f6;
         }
         /* Settings Menu Styling */
         .settings-search {
@@ -70,6 +225,7 @@
             align-items: center;
             gap: 5px;
         }
+        /* Bottom Navigation Bar */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -131,21 +287,131 @@
             <div id="outputResult" style="margin-top: 15px; color: #ccc;"></div>
         </div>
 
-        <!-- 5. Profile & Settings Section -->
+        <!-- 5. Profile & Detailed Dashboard Section -->
         <div id="view-profile" class="app-view" style="display: none;">
-            <div class="profile-header">
-                <h3 style="margin: 0;">👤 Profile</h3>
-                <span id="openSettingsIcon" style="font-size: 22px; cursor: pointer; padding: 5px;" title="Settings and activity">⚙️</span>
+            
+            <!-- Profile Main Content -->
+            <div id="profile-dashboard-content">
+                <div class="profile-header-top">
+                    <span style="font-weight: bold; font-size: 16px;">single.boy.as.insta.in ▾</span>
+                    <div style="display: flex; gap: 15px;">
+                        <span>➕</span>
+                        <span id="openSettingsIcon" style="font-size: 20px; cursor: pointer;" title="Settings">⚙️</span>
+                    </div>
+                </div>
+
+                <!-- Avatar and Stats -->
+                <div class="profile-info-section">
+                    <div class="profile-pic"></div>
+                    <div class="profile-stats">
+                        <div>
+                            <div class="stat-num">44</div>
+                            <div class="stat-label">posts</div>
+                        </div>
+                        <div>
+                            <div class="stat-num">215</div>
+                            <div class="stat-label">followers</div>
+                        </div>
+                        <div>
+                            <div class="stat-num">525</div>
+                            <div class="stat-label">following</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-bio">
+                    <div style="font-weight: bold;">Avinash Mahapatra</div>
+                    <div style="color: #0095f6; font-size: 13px;">@mahapatra1813</div>
+                </div>
+
+                <!-- Dashboard Preview Box -->
+                <div class="dashboard-box">
+                    <div style="font-weight: bold; font-size: 13px;">Your dashboard</div>
+                    <div style="font-size: 12px; color: #0095f6; margin-top: 4px;">↗ 621 views in the last 30 days.</div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="profile-actions">
+                    <button class="profile-btn">Edit profile</button>
+                    <button class="profile-btn">Share profile</button>
+                </div>
+
+                <!-- Follower Management Section -->
+                <div style="border-top: 1px solid #222; padding-top: 15px;">
+                    <div class="follower-tabs">
+                        <span class="active-tab">215 Followers</span>
+                        <span>525 Following</span>
+                        <span>0 Subscriptions</span>
+                        <span>Flagged</span>
+                    </div>
+
+                    <div class="dashboard-search">
+                        <span>🔍</span>
+                        <input type="text" placeholder="Search">
+                    </div>
+
+                    <div style="font-size: 13px; color: #888; margin-bottom: 10px;">Categories</div>
+                    
+                    <div class="category-box">
+                        <div class="category-icon">👥</div>
+                        <div>
+                            <div style="font-weight: bold; font-size: 14px;">People you don't follow back</div>
+                            <div style="font-size: 12px; color: #888;">5196.ranjit and 6 others</div>
+                        </div>
+                    </div>
+
+                    <div class="category-box">
+                        <div class="category-icon">⚡</div>
+                        <div>
+                            <div style="font-weight: bold; font-size: 14px;">Least interacted with</div>
+                            <div style="font-size: 12px; color: #888;">mahanta4267 and 49 others</div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0 10px 0; font-size: 13px; color: #888;">
+                        <span>Sorted by Default</span>
+                        <span>⇅</span>
+                    </div>
+
+                    <div class="user-list-item">
+                        <div class="user-info">
+                            <div class="user-avatar" style="background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);"></div>
+                            <div>
+                                <div class="user-name">zixeg_03</div>
+                                <div class="user-sub">Papurenn💀</div>
+                            </div>
+                        </div>
+                        <button class="action-btn">Message</button>
+                    </div>
+
+                    <div class="user-list-item">
+                        <div class="user-info">
+                            <div class="user-avatar"></div>
+                            <div>
+                                <div class="user-name">happy___life___is___best_</div>
+                                <div class="user-sub">💫🖤 𝕃𝕆𝕍𝔼 𝚉 𝔸 ℝ ℍ 𝕌 𝕃 BOYⓇ 💀</div>
+                            </div>
+                        </div>
+                        <button class="action-btn">Message</button>
+                    </div>
+
+                    <div class="user-list-item">
+                        <div class="user-info">
+                            <div class="user-avatar"></div>
+                            <div>
+                                <div class="user-name">dehurym610</div>
+                                <div class="user-sub">Mangulu Dehury</div>
+                            </div>
+                        </div>
+                        <button class="action-btn primary">Follow back</button>
+                    </div>
+                </div>
             </div>
 
-            <div id="profile-main-content" style="text-align: center;">
-                <p>Welcome to your profile page.</p>
-            </div>
-
-            <!-- Settings & Activity Menu (Hidden by default, shown when gear icon is clicked) -->
+            <!-- Settings & Activity Menu (Hidden by default, opens when gear icon is clicked) -->
             <div id="settings-container" style="display: none;">
-                <h3 style="text-align: center; margin-bottom: 15px;">Settings and activity</h3>
-                <div class="settings-search">🔍 Search</div>
+                <h3 style="margin-bottom: 15px;">Settings and activity</h3>
+                <div class="settings-search">🔍 Search settings</div>
 
                 <div class="settings-section-title">Your account</div>
                 <div class="settings-item"><div class="settings-left">⚙️ Accounts Center</div><div class="settings-right">Password, security, personal details ></div></div>
@@ -192,7 +458,7 @@
         <a href="#" id="nav-profile">👤 Profile</a>
     </nav>
 
-    <!-- Script Logic -->
+    <!-- Script Logic for Tab Switching & Settings Toggle -->
     <script>
         const views = {
             feed: document.getElementById('view-feed'),
@@ -220,15 +486,17 @@
         // Settings gear icon toggle logic inside Profile tab
         const openSettingsIcon = document.getElementById('openSettingsIcon');
         const settingsContainer = document.getElementById('settings-container');
-        const profileMainContent = document.getElementById('profile-main-content');
+        const profileDashboardContent = document.getElementById('profile-dashboard-content');
 
         openSettingsIcon.addEventListener('click', () => {
             if (settingsContainer.style.display === 'none') {
                 settingsContainer.style.display = 'block';
-                profileMainContent.style.display = 'none';
+                profileDashboardContent.style.display = 'none';
+                openSettingsIcon.textContent = '✕'; 
             } else {
                 settingsContainer.style.display = 'none';
-                profileMainContent.style.display = 'block';
+                profileDashboardContent.style.display = 'block';
+                openSettingsIcon.textContent = '⚙️'; 
             }
         });
     </script>
