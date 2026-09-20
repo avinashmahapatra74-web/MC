@@ -3,123 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Z-Eye - Secure Social & AI Studio</title>
+    <title>Z-Eye</title>
     <style>
+        * { box-sizing: border-box; }
         body {
             background-color: #000000;
-            color: #ffffff;
+            color: #f5f5f5;
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             overflow-x: hidden;
         }
-        /* Sticky Top Header */
+        /* Top Header */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 16px;
-            border-bottom: 1px solid #1a1a1a;
+            padding: 10px 16px;
+            border-bottom: 1px solid #262626;
             background: #000;
             position: sticky;
             top: 0;
             z-index: 999;
         }
-        .app-view {
-            padding-bottom: 80px;
+        .logo {
+            font-family: cursive;
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 1px;
         }
-        /* Auth Screen Styles */
-        .auth-container {
-            max-width: 400px;
-            margin: 30px auto;
+        .header-icons {
+            display: flex;
+            gap: 20px;
+            font-size: 22px;
+            cursor: pointer;
+        }
+        .app-view {
+            padding-bottom: 70px;
+            max-width: 470px;
+            margin: 0 auto;
+        }
+        /* Auth Screen */
+        .auth-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             padding: 20px;
-            background: #111;
-            border: 1px solid #222;
-            border-radius: 12px;
+            background: #000;
+        }
+        .auth-box {
+            width: 100%;
+            max-width: 350px;
+            border: 1px solid #262626;
+            padding: 30px 20px;
+            border-radius: 4px;
+            background: #000;
+            text-align: center;
         }
         .auth-input {
             width: 100%;
-            padding: 12px;
-            margin-bottom: 12px;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 8px;
+            background: #121212;
+            border: 1px solid #363636;
+            border-radius: 4px;
+            padding: 9px 12px;
             color: #fff;
             font-size: 14px;
-            box-sizing: border-box;
+            margin-bottom: 8px;
+            outline: none;
         }
-        .auth-btn {
+        .auth-button {
             width: 100%;
-            padding: 12px;
             background: #0095f6;
             color: #fff;
             border: none;
             border-radius: 8px;
-            font-weight: bold;
+            padding: 8px;
+            font-weight: 600;
             font-size: 14px;
             cursor: pointer;
-            margin-bottom: 10px;
+            margin-top: 10px;
         }
-        .social-btn {
-            width: 100%;
-            padding: 10px;
-            background: #262626;
-            color: #fff;
-            border: 1px solid #444;
-            border-radius: 8px;
-            font-weight: 500;
-            font-size: 13px;
-            cursor: pointer;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
+        .auth-button:hover { background: #1877f2; }
         /* Stories Bar */
         .stories-container {
             display: flex;
-            gap: 15px;
-            padding: 10px 15px;
+            gap: 12px;
+            padding: 12px 10px;
             overflow-x: auto;
-            border-bottom: 1px solid #1a1a1a;
-            white-space: nowrap;
+            border-bottom: 1px solid #262626;
+            background: #000;
         }
+        .stories-container::-webkit-scrollbar { display: none; }
         .story-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
-            font-size: 11px;
-            color: #aaa;
+            gap: 4px;
+            font-size: 12px;
+            color: #a8a8a8;
             cursor: pointer;
+            flex-shrink: 0;
         }
         .story-ring {
-            width: 64px;
-            height: 64px;
+            width: 62px;
+            height: 62px;
             border-radius: 50%;
             background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 2px;
         }
         .story-img {
-            width: 60px;
-            height: 60px;
+            width: 58px;
+            height: 58px;
             border-radius: 50%;
-            background: #222;
+            background: #262626;
             border: 2px solid #000;
             object-fit: cover;
         }
         /* Feed Posts */
         .post-card {
-            border-bottom: 1px solid #1a1a1a;
-            margin-bottom: 15px;
+            border-bottom: 1px solid #262626;
+            margin-bottom: 12px;
+            background: #000;
         }
         .post-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 15px;
+            padding: 10px 12px;
         }
         .post-user {
             display: flex;
@@ -133,136 +146,146 @@
             height: 32px;
             border-radius: 50%;
             background: #333;
+            object-fit: cover;
         }
         .post-media {
             width: 100%;
-            height: 380px;
-            background: #111;
+            height: 420px;
+            background: #121212;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #666;
+            color: #737373;
             font-size: 14px;
-            object-fit: cover;
         }
         .post-actions {
             display: flex;
             justify-content: space-between;
-            padding: 10px 15px;
+            padding: 10px 12px;
             font-size: 22px;
         }
         .post-actions-left {
             display: flex;
-            gap: 15px;
+            gap: 16px;
         }
         .post-details {
-            padding: 0 15px 15px 15px;
-            font-size: 13px;
+            padding: 0 12px 12px 12px;
+            font-size: 14px;
         }
         /* Profile Layout */
         .profile-container {
-            padding: 15px;
+            padding: 16px;
         }
-        .profile-header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .profile-info-section {
+        .profile-top {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
-        .profile-pic {
-            width: 78px;
-            height: 78px;
+        .profile-avatar-large {
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
-            background: #333;
-            border: 2px solid #555;
-            object-fit: cover;
+            background: #262626;
+            border: 1px solid #dbdbdb;
         }
         .profile-stats {
             display: flex;
-            gap: 20px;
+            gap: 25px;
             text-align: center;
         }
-        .stat-num {
+        .stat-val {
             font-weight: bold;
             font-size: 16px;
         }
-        .stat-label {
+        .stat-lbl {
             font-size: 12px;
-            color: #aaa;
+            color: #a8a8a8;
         }
         .profile-bio {
             font-size: 14px;
-            margin-bottom: 15px;
             line-height: 1.4;
+            margin-bottom: 15px;
         }
-        .profile-actions {
+        .profile-buttons {
             display: flex;
             gap: 8px;
             margin-bottom: 20px;
         }
-        .profile-btn {
+        .ig-button {
             flex: 1;
-            background: #262626;
+            background: #363636;
             color: #fff;
             border: none;
-            padding: 8px;
+            padding: 7px;
             border-radius: 8px;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 14px;
             cursor: pointer;
             text-align: center;
-        }
-        .profile-content-tabs {
-            display: flex;
-            justify-content: space-around;
-            border-bottom: 1px solid #1a1a1a;
-            margin-bottom: 2px;
-            font-size: 18px;
-            color: #777;
-        }
-        .profile-content-tabs .active-profile-tab {
-            color: #fff;
-            border-bottom: 1px solid #fff;
-            padding-bottom: 8px;
-            margin-bottom: -1px;
         }
         .profile-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 2px;
         }
-        .grid-tile {
-            width: 100%;
+        .grid-item {
             aspect-ratio: 1;
             background: #121212;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #555;
+            color: #737373;
             font-size: 12px;
         }
-        /* AI Workspace Styles */
+        /* AI Workspace */
+        .ai-studio {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 120px);
+        }
+        .ai-chips {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            margin-bottom: 12px;
+            padding-bottom: 4px;
+        }
+        .ai-chips::-webkit-scrollbar { display: none; }
         .ai-chip {
-            background: #1a1a1a;
-            color: #ddd;
-            border: 1px solid #333;
+            background: #262626;
+            color: #f5f5f5;
+            border: none;
             padding: 6px 12px;
-            border-radius: 20px;
+            border-radius: 16px;
             font-size: 12px;
             cursor: pointer;
             white-space: nowrap;
         }
-        .ai-chip:hover {
-            background: #0095f6;
-            color: #fff;
+        .ai-chip:hover { background: #0095f6; }
+        .chat-box {
+            flex: 1;
+            background: #121212;
+            border: 1px solid #262626;
+            border-radius: 8px;
+            padding: 12px;
+            overflow-y: auto;
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
-        .chat-bubble-user {
+        .bubble-ai {
+            background: #262626;
+            color: #f5f5f5;
+            padding: 10px 14px;
+            border-radius: 12px 12px 12px 2px;
+            font-size: 13px;
+            max-width: 85%;
+            line-height: 1.4;
+        }
+        .bubble-user {
             background: #0095f6;
             color: #fff;
             padding: 10px 14px;
@@ -270,19 +293,6 @@
             font-size: 13px;
             max-width: 80%;
             align-self: flex-end;
-            margin-bottom: 8px;
-        }
-        .chat-bubble-ai {
-            background: #1a1a1a;
-            color: #ddd;
-            padding: 10px 14px;
-            border-radius: 12px 12px 12px 2px;
-            font-size: 13px;
-            max-width: 85%;
-            align-self: flex-start;
-            border: 1px solid #2a2a2a;
-            margin-bottom: 8px;
-            line-height: 1.4;
         }
         /* Bottom Navigation Bar */
         .bottom-nav {
@@ -290,429 +300,280 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 55px;
+            height: 52px;
             background-color: #000000;
-            border-top: 1px solid #1a1a1a;
+            border-top: 1px solid #262626;
             display: flex;
             justify-content: space-around;
             align-items: center;
             z-index: 1000;
         }
         .bottom-nav a {
-            color: #ffffff;
+            color: #f5f5f5;
             text-decoration: none;
             font-size: 22px;
+        }
+        /* Settings Drawer Style */
+        .settings-item {
+            padding: 14px 0;
+            border-bottom: 1px solid #1a1a1a;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
     </style>
 </head>
 <body>
 
-    <!-- Top Header -->
-    <header>
-        <h2 style="margin: 0; font-size: 22px; font-weight: bold; font-family: cursive; letter-spacing: 0.5px;">Z-Eye</h2>
-        <div style="display: flex; gap: 20px; font-size: 20px; cursor: pointer;">
-            <span id="nav-messages" title="Messages">💬</span>
-            <span title="Notifications">❤️</span>
+    <!-- AUTHENTICATION SCREEN -->
+    <div id="view-auth" class="auth-wrapper">
+        <div class="auth-box">
+            <h1 class="logo" style="margin-bottom: 25px;">Z-Eye</h1>
+            <div id="login-form">
+                <input type="text" class="auth-input" id="loginEmail" placeholder="Phone number, username, or email">
+                <input type="password" class="auth-input" id="loginPass" placeholder="Password">
+                <button class="auth-button" onclick="handleAuthLogin()">Log In</button>
+            </div>
+            <div style="margin: 20px 0; color: #a8a8a8; font-size: 12px;">OR</div>
+            <button class="auth-button" style="background: #363636; margin-top: 0;" onclick="handleGoogleLogin()">Continue with Google / 2FA</button>
         </div>
-    </header>
+    </div>
 
-    <!-- Main Dynamic Content Views -->
-    <main class="app-view">
-        
-        <!-- 0. AUTHENTICATION VIEW -->
-        <div id="view-auth" style="display: block;">
-            <div class="auth-container">
-                <h2 style="text-align: center; margin-bottom: 20px; color: #0095f6;">Z-Eye Secure Access</h2>
-                
-                <!-- Toggle Tabs -->
-                <div style="display: flex; margin-bottom: 15px; border-bottom: 1px solid #333;">
-                    <button id="tab-login" style="flex: 1; background: none; border: none; color: #fff; padding: 10px; font-weight: bold; border-bottom: 2px solid #0095f6; cursor: pointer;" onclick="switchAuthMode('login')">Login</button>
-                    <button id="tab-signup" style="flex: 1; background: none; border: none; color: #888; padding: 10px; font-weight: bold; cursor: pointer;" onclick="switchAuthMode('signup')">Sign Up</button>
-                </div>
-
-                <!-- LOGIN FORM -->
-                <div id="form-login">
-                    <input type="email" class="auth-input" placeholder="Email ID (Google, Outlook, Yahoo, etc.)" id="loginEmail">
-                    <input type="password" class="auth-input" placeholder="Password" id="loginPassword">
-                    <button class="auth-btn" onclick="handleLogin()">Log In</button>
-                    <div style="text-align: center; margin: 10px 0; color: #666; font-size: 12px;">OR SECURE LOGIN WITH 2FA</div>
-                    <button class="social-btn" onclick="handleBiometricLogin('fingerprint')">🔒 Fingerprint Authentication</button>
-                    <button class="social-btn" onclick="handleBiometricLogin('face')">👤 Face Recognition ID</button>
-                </div>
-
-                <!-- SIGN UP FORM -->
-                <div id="form-signup" style="display: none;">
-                    <input type="text" class="auth-input" placeholder="Full Name" id="signupName">
-                    <input type="email" class="auth-input" placeholder="Email ID (Any provider)" id="signupEmail">
-                    <input type="password" class="auth-input" placeholder="Create Password" id="signupPassword">
-                    
-                    <label style="font-size: 12px; color: #aaa; display: block; margin-bottom: 4px;">Date of Birth:</label>
-                    <input type="date" class="auth-input" id="signupDob" onchange="calculateAge()">
-                    <div id="ageDisplay" style="font-size: 12px; color: #0095f6; margin-bottom: 10px;"></div>
-
-                    <label style="font-size: 12px; color: #aaa; display: block; margin-bottom: 4px;">Gender:</label>
-                    <select class="auth-input" id="signupGender">
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Other">Other / Prefer not to say</option>
-                    </select>
-
-                    <label style="font-size: 12px; color: #aaa; display: block; margin-bottom: 4px;">Profile Image File:</label>
-                    <input type="file" class="auth-input" id="signupProfileImg" accept="image/*">
-
-                    <label style="font-size: 12px; color: #aaa; display: block; margin-bottom: 4px;">Choose 2FA Security Method:</label>
-                    <select class="auth-input" id="signup2FA">
-                        <option value="Password Only">Password Only</option>
-                        <option value="Password + Fingerprint">Password + Fingerprint 2FA</option>
-                        <option value="Password + Face ID">Password + Face Recognition 2FA</option>
-                    </select>
-
-                    <button class="auth-btn" onclick="handleSignup()">Create Z-Eye Account</button>
-                </div>
-
-                <div style="text-align: center; margin-top: 15px;">
-                    <button class="social-btn" onclick="handleGoogleAuth()">🌐 Continue with Google</button>
-                </div>
+    <!-- MAIN APP SHELL -->
+    <div id="main-app" style="display: none;">
+        <!-- Top Header -->
+        <header>
+            <div class="logo">Z-Eye</div>
+            <div class="header-icons">
+                <span onclick="switchTab('messages')">💬</span>
+                <span onclick="alert('No new notifications')">❤️</span>
             </div>
-        </div>
+        </header>
 
-        <!-- 1. FEED VIEW -->
-        <div id="view-feed" style="display: none;">
-            <div class="stories-container">
-                <div class="story-item">
-                    <div class="story-ring" style="background: #444;"><div class="story-img" style="background: #222; display: flex; align-items: center; justify-content: center; font-size: 18px;">+</div></div>
-                    <span>Your story</span>
-                </div>
-                <div class="story-item"><div class="story-ring"><div class="story-img" id="feedUserAvatar"></div></div><span id="feedUsername">z_eye_official</span></div>
-            </div>
-
-            <div class="post-card">
-                <div class="post-header">
-                    <div class="post-user">
-                        <div class="post-avatar"></div>
-                        <span id="postUsernameDisplay">z_eye_official</span>
-                    </div>
-                    <span>•••</span>
-                </div>
-                <div class="post-media">[ Official Z-Eye Media Feed ]</div>
-                <div class="post-actions">
-                    <div class="post-actions-left">
-                        <span>🤍</span><span>💬</span><span>↗️</span>
-                    </div>
-                    <span>🔖</span>
-                </div>
-                <div class="post-details">
-                    <div style="font-weight: bold; margin-bottom: 4px;">1 like</div>
-                    <div><b id="postUsernameText">z_eye_official</b> Welcome to secure Z-Eye platform!</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 2. EXPLORE VIEW -->
-        <div id="view-explore" style="display: none; padding: 10px;">
-            <div style="background: #121212; padding: 10px 15px; border-radius: 8px; margin-bottom: 15px; color: #888; border: 1px solid #222; display: flex; align-items: center; gap: 10px;">
-                <span>🔍</span>
-                <input type="text" placeholder="Search reels, tags..." style="background: transparent; border: none; color: #fff; width: 100%; outline: none;">
-            </div>
-            <div style="text-align: center; color: #666; padding: 50px;">No explore items yet. Use AI Studio to generate media.</div>
-        </div>
-
-        <!-- 3. POST CREATION VIEW -->
-        <div id="view-post" style="display: none; text-align: center; padding: 40px 20px;">
-            <h3>➕ Create New Post</h3>
-            <p style="color: #888; font-size: 13px;">Publish photos, stories, reels or live broadcasts.</p>
-            <div style="border: 2px dashed #444; padding: 40px; border-radius: 12px; margin: 20px 0; color: #aaa;">
-                📂 Drag and Drop Media Files Here
-            </div>
-            <button style="background: #0095f6; color: #fff; border: none; padding: 10px 25px; border-radius: 6px; font-weight: bold;">Share to Z-Eye Feed</button>
-        </div>
-
-        <!-- 4. ADVANCED AI CREATOR STUDIO & WORLD LANGUAGE ENGINE -->
-        <div id="view-ai" style="display: none; padding: 15px; display: flex; flex-direction: column; height: calc(100vh - 130px);">
-            <div style="text-align: center; margin-bottom: 10px;">
-                <h3 style="margin: 0; color: #0095f6;">✨ Z-Eye AI Studio & Universal Language</h3>
-                <p style="color: #888; font-size: 12px; margin-top: 2px;">Photos, Videos, Prompts, Hashtags & All World Languages Supported</p>
-            </div>
+        <!-- Views Container -->
+        <main class="app-view">
             
-            <div style="display: flex; gap: 8px; overflow-x: auto; margin-bottom: 10px; padding-bottom: 4px;">
-                <button class="ai-chip" onclick="triggerPreset('Generate an AI Photo prompt for a futuristic city at night')">📸 Photo Prompt</button>
-                <button class="ai-chip" onclick="triggerPreset('Generate an AI Video script and prompt for a cinematic reel')">🎥 Video Prompt</button>
-                <button class="ai-chip" onclick="triggerPreset('Translate this caption into Hindi, Spanish, Japanese, and French')">🌍 World Languages</button>
-                <button class="ai-chip" onclick="triggerPreset('Write a catchy Instagram caption with keywords')">📝 Caption & Keywords</button>
-                <button class="ai-chip" onclick="triggerPreset('Give me 15 viral hashtags for max reach')">#️⃣ Hashtags</button>
-            </div>
+            <!-- 1. FEED -->
+            <div id="tab-feed" class="tab-content">
+                <div class="stories-container">
+                    <div class="story-item">
+                        <div class="story-ring" style="background: #444;"><div class="story-img" style="display: flex; align-items: center; justify-content: center; font-size: 20px;">+</div></div>
+                        <span>Your story</span>
+                    </div>
+                    <div class="story-item"><div class="story-ring"><div class="story-img"></div></div><span>z_eye_official</span></div>
+                </div>
 
-            <div id="aiChatContainer" style="background: #0a0a0a; border: 1px solid #222; border-radius: 12px; flex: 1; overflow-y: auto; padding: 12px; margin-bottom: 10px; display: flex; flex-direction: column;">
-                <div class="chat-bubble-ai">
-                    👋 Welcome to <b>Z-Eye AI Studio</b>! Equipped with Universal World Language Support[span_2](start_span)[span_2](end_span).
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="post-user">
+                            <div class="post-avatar"></div>
+                            <span>z_eye_official</span>
+                        </div>
+                        <span>•••</span>
+                    </div>
+                    <div class="post-media">[ Official Z-Eye Photo / Video Feed ]</div>
+                    <div class="post-actions">
+                        <div class="post-actions-left">
+                            <span>🤍</span><span>💬</span><span>↗️</span>
+                        </div>
+                        <span>🔖</span>
+                    </div>
+                    <div class="post-details">
+                        <div style="font-weight: 600; margin-bottom: 4px; font-size: 13px;">1,240 likes</div>
+                        <div><b>z_eye_official</b> Building the ultimate Instagram-style experience with Z-Eye. 🚀✨</div>
+                    </div>
                 </div>
             </div>
 
-            <div style="display: flex; gap: 8px;">
-                <input type="text" id="aiUserInput" placeholder="Type prompt or text in any world language..." style="flex: 1; padding: 12px; background: #111; color: #fff; border: 1px solid #333; border-radius: 8px; outline: none; font-size: 13px;" />
-                <button id="aiSendBtn" style="background: #0095f6; color: #fff; border: none; padding: 0 16px; border-radius: 8px; font-weight: bold; cursor: pointer;">Execute</button>
-            </div>
-        </div>
-
-        <!-- 5. PROFILE VIEW -->
-        <div id="view-profile" style="display: none;" class="profile-container">
-            <div class="profile-header-top">
-                <span id="profileUsernameHeader" style="font-weight: bold; font-size: 16px;">z_eye_official ▾</span>
-                <span onclick="logoutUser()" title="Logout" style="cursor:pointer; color:#ed4956;">🚪 Logout</span>
-            </div>
-
-            <div class="profile-info-section">
-                <div class="profile-pic" id="profilePicDisplay"></div>
-                <div class="profile-stats">
-                    <div><div class="stat-num">1</div><div class="stat-label">posts</div></div>
-                    <div><div class="stat-num">0</div><div class="stat-label">followers</div></div>
-                    <div><div class="stat-num">0</div><div class="stat-label">following</div></div>
+            <!-- 2. EXPLORE -->
+            <div id="tab-explore" class="tab-content" style="display: none; padding: 10px;">
+                <input type="text" class="auth-input" placeholder="Search accounts, tags, reels..." style="margin-bottom: 12px;">
+                <div class="profile-grid">
+                    <div class="grid-item" style="aspect-ratio: 1/2; grid-row: span 2;">Reel 1</div>
+                    <div class="grid-item">Explore 2</div>
+                    <div class="grid-item">Explore 3</div>
+                    <div class="grid-item">Explore 4</div>
+                    <div class="grid-item" style="aspect-ratio: 1/2; grid-row: span 2;">Reel 2</div>
+                    <div class="grid-item">Explore 5</div>
+                    <div class="grid-item">Explore 6</div>
                 </div>
             </div>
 
-            <div class="profile-bio">
-                <div id="profileFullName" style="font-weight: bold;">Z-Eye Official</div>
-                <div id="profileEmailDisplay" style="color: #0095f6; font-size: 13px;">@z_eye_official</div>
-                <div id="profileMetaDisplay" style="color: #888; font-size: 12px; margin-top: 4px;">Age: -- | Gender: -- | 2FA: --</div>
+            <!-- 3. CREATE POST -->
+            <div id="tab-post" class="tab-content" style="display: none; text-align: center; padding: 40px 20px;">
+                <h3>Create new post</h3>
+                <div style="border: 2px dashed #363636; padding: 40px; border-radius: 8px; margin: 20px 0; color: #a8a8a8;">
+                    Drag photos and videos here
+                </div>
+                <button class="auth-button" style="width: auto; padding: 8px 20px;">Select from device</button>
             </div>
 
-            <div class="profile-actions">
-                <button class="profile-btn">Edit profile</button>
-                <button class="profile-btn">Share profile</button>
+            <!-- 4. AI CREATOR STUDIO & MULTI-LANGUAGE TRANSLATOR -->
+            <div id="tab-ai" class="tab-content ai-studio" style="display: none;">
+                <div style="text-align: center; margin-bottom: 10px;">
+                    <h3 style="margin: 0; color: #0095f6;">✨ Z-Eye AI Studio</h3>
+                    <p style="color: #a8a8a8; font-size: 11px; margin-top: 2px;">Photos, Videos, Captions, Hashtags & World Languages</p>
+                </div>
+                <div class="ai-chips">
+                    <button class="ai-chip" onclick="runAIPreset('Generate an AI photo prompt for a cyberpunk portrait')">📸 Photo Prompt</button>
+                    <button class="ai-chip" onclick="runAIPreset('Generate a viral Instagram reel video script')">🎥 Video Script</button>
+                    <button class="ai-chip" onclick="runAIPreset('Translate this caption into Hindi, Spanish, and French')">🌍 Translate</button>
+                    <button class="ai-chip" onclick="runAIPreset('Give me 15 viral hashtags')">#️⃣ Hashtags</button>
+                </div>
+                <div id="aiChatBox" class="chat-box">
+                    <div class="bubble-ai">👋 Welcome to Z-Eye AI Studio! Ask me to generate prompts, captions, or translate to any world language.</div>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" id="aiInput" class="auth-input" style="margin: 0;" placeholder="Ask AI anything in any language...">
+                    <button class="auth-button" style="margin: 0; width: auto; padding: 0 16px;" onclick="sendAIQuery()">Send</button>
+                </div>
             </div>
 
-            <div class="profile-content-tabs">
-                <span class="active-profile-tab">🔲</span>
+            <!-- 5. PROFILE & SETTINGS -->
+            <div id="tab-profile" class="tab-content profile-container" style="display: none;">
+                <!-- Main Profile View -->
+                <div id="profile-main-view">
+                    <div class="profile-top">
+                        <div class="profile-avatar-large" id="profAvatar"></div>
+                        <div class="profile-stats">
+                            <div><div class="stat-val">1</div><div class="stat-lbl">posts</div></div>
+                            <div><div class="stat-val">0</div><div class="stat-lbl">followers</div></div>
+                            <div><div class="stat-val">0</div><div class="stat-lbl">following</div></div>
+                        </div>
+                    </div>
+                    <div class="profile-bio">
+                        <div id="profName" style="font-weight: 600;">Z-Eye Creator</div>
+                        <div id="profHandle" style="color: #0095f6; font-size: 13px;">@z_eye_official</div>
+                        <div style="color: #a8a8a8; font-size: 12px; margin-top: 4px;">Universal Social & AI Platform 🌐</div>
+                    </div>
+                    <div class="profile-buttons">
+                        <button class="ig-button">Edit profile</button>
+                        <button class="ig-button" onclick="openSettings()">Settings ⚙️</button>
+                    </div>
+                    <div class="profile-content-tabs">
+                        <span style="border-bottom: 1px solid #fff; padding-bottom: 6px;">🔲 Posts</span>
+                    </div>
+                    <div class="profile-grid" style="margin-top: 2px;">
+                        <div class="grid-item">Post 1</div>
+                    </div>
+                </div>
+
+                <!-- Settings & Activity View (Instagram Style) -->
+                <div id="profile-settings-view" style="display: none;">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid #262626; padding-bottom: 10px;">
+                        <span onclick="closeSettings()" style="cursor: pointer; font-size: 20px;">←</span>
+                        <h3 style="margin: 0;">Settings and activity</h3>
+                    </div>
+                    <div class="settings-item">⚙️ Accounts Center</div>
+                    <div class="settings-item">🔒 Account privacy</div>
+                    <div class="settings-item">🔔 Notifications</div>
+                    <div class="settings-item">🛡️ Security & 2FA (Biometrics)</div>
+                    <div class="settings-item">🌐 Language and translations</div>
+                    <div onclick="handleLogout()" style="padding: 16px 0; color: #ed4956; font-weight: 600; cursor: pointer; margin-top: 15px;">🚪 Log out</div>
+                </div>
             </div>
 
-            <div class="profile-grid">
-                <div class="grid-tile">Your Post</div>
+            <!-- 6. MESSAGES -->
+            <div id="tab-messages" class="tab-content" style="display: none; padding: 16px;">
+                <h3>Messages</h3>
+                <input type="text" class="auth-input" placeholder="Search direct messages" style="margin-bottom: 15px;">
+                <div style="display: flex; align-items: center; gap: 12px; padding: 8px 0;">
+                    <div class="post-avatar"></div>
+                    <div>
+                        <div style="font-weight: 600; font-size: 14px;">Z-Eye Support</div>
+                        <div style="font-size: 12px; color: #a8a8a8;">Welcome to Z-Eye messaging!</div>
+                    </div>
+                </div>
             </div>
-        </div>
 
-    </main>
+        </main>
 
-    <!-- Bottom Navigation Bar (Hidden on Auth screen) -->
-    <nav class="bottom-nav" id="bottomNav" style="display: none;">
-        <a href="#" id="nav-feed" title="Feed">🏠</a>
-        <a href="#" id="nav-explore" title="Explore">🔍</a>
-        <a href="#" id="nav-post" title="Create Post">➕</a>
-        <a href="#" id="nav-ai" title="AI Studio">✨</a>
-        <a href="#" id="nav-profile" title="Profile">👤</a>
-    </nav>
+        <!-- Bottom Navigation Bar -->
+        <nav class="bottom-nav">
+            <a href="#" onclick="switchTab('feed'); return false;">🏠</a>
+            <a href="#" onclick="switchTab('explore'); return false;">🔍</a>
+            <a href="#" onclick="switchTab('post'); return false;">➕</a>
+            <a href="#" onclick="switchTab('ai'); return false;">✨</a>
+            <a href="#" onclick="switchTab('profile'); return false;">👤</a>
+        </nav>
+    </div>
 
-    <!-- JavaScript Application Logic -->
+    <!-- Script Logic -->
     <script>
-        let currentUser = null;
-
-        function switchAuthMode(mode) {
-            const loginForm = document.getElementById('form-login');
-            const signupForm = document.getElementById('form-signup');
-            const tabLogin = document.getElementById('tab-login');
-            const tabSignup = document.getElementById('tab-signup');
-
-            if(mode === 'login') {
-                loginForm.style.display = 'block';
-                signupForm.style.display = 'none';
-                tabLogin.style.color = '#fff';
-                tabLogin.style.borderBottom = '2px solid #0095f6';
-                tabSignup.style.color = '#888';
-                tabSignup.style.borderBottom = 'none';
-            } else {
-                loginForm.style.display = 'none';
-                signupForm.style.display = 'block';
-                tabSignup.style.color = '#fff';
-                tabSignup.style.borderBottom = '2px solid #0095f6';
-                tabLogin.style.color = '#888';
-                tabLogin.style.borderBottom = 'none';
-            }
-        }
-
-        function calculateAge() {
-            const dobInput = document.getElementById('signupDob').value;
-            if(!dobInput) return;
-            const dob = new Date(dobInput);
-            const diff = Date.now() - dob.getTime();
-            const ageDate = new Date(diff);
-            const age = Math.abs(ageDate.getUTCFullYear() - 1970);
-            document.getElementById('ageDisplay').innerText = `Calculated Age: ${age} years old`;
-        }
-
-        function handleSignup() {
-            const name = document.getElementById('signupName').value;
-            const email = document.getElementById('signupEmail').value;
-            const password = document.getElementById('signupPassword').value;
-            const dob = document.getElementById('signupDob').value;
-            const gender = document.getElementById('signupGender').value;
-            const twoFA = document.getElementById('signup2FA').value;
-
-            if(!name || !email || !password || !dob) {
-                alert('Please fill in all required fields!');
-                return;
-            }
-
-            const dobDate = new Date(dob);
-            const age = Math.abs(new Date(Date.now() - dobDate.getTime()).getUTCFullYear() - 1970);
-
-            currentUser = {
-                name,
-                email,
-                gender,
-                age,
-                twoFA
-            };
-
-            alert(`Account created successfully with ${twoFA.toUpperCase()} protection!`);
-            launchApp();
-        }
-
-        function handleLogin() {
+        function handleAuthLogin() {
             const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-
-            if(!email || !password) {
-                alert('Please enter email and password.');
-                return;
-            }
-
-            currentUser = {
-                name: email.split('@')[0],
-                email: email,
-                gender: 'Not specified',
-                age: 'N/A',
-                twoFA: 'Standard Password'
-            };
-
-            alert('Login successful!');
-            launchApp();
-        }
-
-        function handleBiometricLogin(type) {
-            alert(`Simulating 2FA ${type.toUpperCase()} Authentication... Access Granted!`);
-            currentUser = {
-                name: 'Secure User',
-                email: 'verified_user@zeye.auth',
-                gender: 'Verified',
-                age: 'Verified',
-                twoFA: type === 'fingerprint' ? 'Fingerprint 2FA' : 'Face ID 2FA'
-            };
-            launchApp();
-        }
-
-        function handleGoogleAuth() {
-            alert('Google Sign-Up / Login successful!');
-            currentUser = {
-                name: 'Google User',
-                email: 'google_account@gmail.com',
-                gender: 'Google Account',
-                age: 'Verified',
-                twoFA: 'Google OAuth'
-            };
-            launchApp();
-        }
-
-        function launchApp() {
+            if(!email) { alert('Please enter your email or username'); return; }
+            const username = email.split('@')[0];
+            document.getElementById('profName').innerText = username;
+            document.getElementById('profHandle').innerText = '@' + username;
             document.getElementById('view-auth').style.display = 'none';
-            document.getElementById('bottomNav').style.display = 'flex';
+            document.getElementById('main-app').style.display = 'block';
+            switchTab('feed');
+        }
+
+        function handleGoogleLogin() {
+            alert('Google & 2FA Biometric Secure Login Successful!');
+            document.getElementById('profName').innerText = 'Google User';
+            document.getElementById('profHandle').innerText = '@google_user';
+            document.getElementById('view-auth').style.display = 'none';
+            document.getElementById('main-app').style.display = 'block';
+            switchTab('feed');
+        }
+
+        function openSettings() {
+            document.getElementById('profile-main-view').style.display = 'none';
+            document.getElementById('profile-settings-view').style.display = 'block';
+        }
+
+        function closeSettings() {
+            document.getElementById('profile-main-view').style.display = 'block';
+            document.getElementById('profile-settings-view').style.display = 'none';
+        }
+
+        function handleLogout() {
+            closeSettings();
+            document.getElementById('main-app').style.display = 'none';
+            document.getElementById('view-auth').style.display = 'flex';
+        }
+
+        function switchTab(tabName) {
+            closeSettings();
+            const tabs = ['feed', 'explore', 'post', 'ai', 'profile', 'messages'];
+            tabs.forEach(t => {
+                const el = document.getElementById('tab-' + t);
+                if(el) el.style.display = (t === tabName) ? 'block' : 'none';
+            });
+        }
+
+        // AI Logic
+        function sendAIQuery() {
+            const input = document.getElementById('aiInput');
+            const q = input.value.trim();
+            if(!q) return;
             
-            // Populate user profile info
-            document.getElementById('profileFullName').innerText = currentUser.name;
-            document.getElementById('profileEmailDisplay').innerText = currentUser.email;
-            document.getElementById('profileMetaDisplay').innerText = `Age: ${currentUser.age} | Gender: ${currentUser.gender} | 2FA: ${currentUser.twoFA}`;
-            document.getElementById('feedUsername').innerText = currentUser.name;
-            document.getElementById('postUsernameDisplay').innerText = currentUser.name;
-            document.getElementById('postUsernameText').innerText = currentUser.name;
-            document.getElementById('profileUsernameHeader').innerText = currentUser.name + ' ▾';
-
-            switchView('feed');
-        }
-
-        function logoutUser() {
-            currentUser = null;
-            document.getElementById('view-auth').style.display = 'block';
-            document.getElementById('bottomNav').style.display = 'none';
-            Object.keys(views).forEach(key => {
-                if(views[key]) views[key].style.display = 'none';
-            });
-            document.getElementById('view-auth').style.display = 'block';
-        }
-
-        const views = {
-            feed: document.getElementById('view-feed'),
-            explore: document.getElementById('view-explore'),
-            post: document.getElementById('view-post'),
-            ai: document.getElementById('view-ai'),
-            profile: document.getElementById('view-profile')
-        };
-
-        function switchView(activeKey) {
-            Object.keys(views).forEach(key => {
-                if(views[key]) views[key].style.display = 'none';
-            });
-            if(views[activeKey]) {
-                views[activeKey].style.display = 'block';
-            }
-        }
-
-        document.getElementById('nav-feed').addEventListener('click', (e) => { e.preventDefault(); switchView('feed'); });
-        document.getElementById('nav-explore').addEventListener('click', (e) => { e.preventDefault(); switchView('explore'); });
-        document.getElementById('nav-post').addEventListener('click', (e) => { e.preventDefault(); switchView('post'); });
-        document.getElementById('nav-ai').addEventListener('click', (e) => { e.preventDefault(); switchView('ai'); });
-        document.getElementById('nav-profile').addEventListener('click', (e) => { e.preventDefault(); switchView('profile'); });
-
-        // AI Studio Logic
-        const chatContainer = document.getElementById('aiChatContainer');
-        const aiUserInput = document.getElementById('aiUserInput');
-        const aiSendBtn = document.getElementById('aiSendBtn');
-
-        function appendMessage(text, sender) {
-            const bubble = document.createElement('div');
-            bubble.className = sender === 'user' ? 'chat-bubble-user' : 'chat-bubble-ai';
-            bubble.innerHTML = text;
-            chatContainer.appendChild(bubble);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-
-        function handleAISubmit() {
-            const query = aiUserInput.value.trim();
-            if(!query) return;
-
-            appendMessage(query, 'user');
-            aiUserInput.value = '';
+            const box = document.getElementById('aiChatBox');
+            box.innerHTML += `<div class="bubble-user">${q}</div>`;
+            input.value = '';
+            box.scrollTop = box.scrollHeight;
 
             setTimeout(() => {
-                let aiReply = `🌍 <b>Global AI & Multi-Language Analysis[span_3](start_span)[span_3](end_span):</b><br>Input recognized across global language spectrum.<br>✨ <b>Processed keywords & multi-lingual context:</b> Active.`;
+                let reply = `🤖 <b>AI Output:</b> Processed successfully across global languages.`;
+                const lq = q.toLowerCase();
+                if(lq.includes('photo')) reply = `📸 <b>Photo Prompt:</b> Cinematic, hyper-realistic, 8k resolution neon lighting.`;
+                else if(lq.includes('video')) reply = `🎥 <b>Video Script:</b> Hook (0-3s) -> Showcase -> Call to action.`;
+                else if(lq.includes('translate')) reply = `🌍 <b>Translations:</b><br>🇮🇳 Hindi: ज़ेड-आई स्टूडियो<br>🇪🇸 Spanish: Estudio Z-Eye<br>🇯🇵 Japanese: Z-Eye スタジオ`;
+                else if(lq.includes('hashtag')) reply = `#️⃣ <b>Hashtags:</b> #ZEyeApp #CreatorStudio #ViralReels #GlobalTech`;
                 
-                const lowerQ = query.toLowerCase();
-                if(lowerQ.includes('photo') || lowerQ.includes('image')) {
-                    aiReply = `📸 <b>AI Photo Generation Prompt:</b><br>"Cinematic ultra-realistic portrait, neon cyberpunk lighting, 8k resolution, highly detailed --ar 9:16"<br><i>[Status: Optimized for all language inputs]</i>`;
-                } else if(lowerQ.includes('video') || lowerQ.includes('reel')) {
-                    aiReply = `🎥 <b>AI Video Generation Script:</b><br><b>Prompt:</b> "Smooth drone shot sweeping over a futuristic neon city at twilight, 4k 60fps."<br><b>Multi-language Audio Support:</b> Ready for auto-dubbing in 100+ languages[span_4](start_span)[span_4](end_span).`;
-                } else if(lowerQ.includes('translate') || lowerQ.includes('language') || lowerQ.includes('hindi') || lowerQ.includes('world')) {
-                    aiReply = `🌍 <b>Universal World Language Translation Result:</b><br>` +
-                              `🇮🇳 <b>Hindi:</b> ज़ेड-आई एआई स्टूडियो में आपका स्वागत है[span_5](start_span)[span_5](end_span).<br>` +
-                              `🇪🇸 <b>Spanish:</b> Bienvenido al estudio de inteligencia artificial Z-Eye[span_6](start_span)[span_6](end_span).<br>` +
-                              `🇯🇵 <b>Japanese:</b> Z-Eye AIスタジオへようこそ[span_7](start_span)[span_7](end_span).<br>` +
-                              `🇫🇷 <b>French:</b> Bienvenue dans le studio IA Z-Eye[span_8](start_span)[span_8](end_span).<br>` +
-                              `🇸🇦 <b>Arabic:</b> أهلاً بك في استوديو الذكاء الاصطناعي Z-Eye[span_9](start_span)[span_9](end_span).`;
-                } else if(lowerQ.includes('hashtag')) {
-                    aiReply = `#️⃣ <b>Global Viral Hashtags (Multi-language optimized):</b><br>#ZEyeAI #GlobalCreator #AIArt #ViralReels #MundoCreativo #TechTrends`;
-                } else if(lowerQ.includes('caption') || lowerQ.includes('keyword')) {
-                    aiReply = `📝 <b>Optimized Caption & Multi-lingual Keywords[span_10](start_span)[span_10](end_span):</b><br><b>Caption:</b> "Connecting the world through code, design, and universal AI[span_11](start_span)[span_11](end_span). 🌐✨"<br><b>Keywords:</b> translation, ai studio, global creator, z-eye.`;
-                }
-                
-                appendMessage(aiReply, 'ai');
-            }, 800);
+                box.innerHTML += `<div class="bubble-ai">${reply}</div>`;
+                box.scrollTop = box.scrollHeight;
+            }, 600);
         }
 
-        aiSendBtn.addEventListener('click', handleAISubmit);
-        aiUserInput.addEventListener('keypress', (e) => {
-            if(e.key === 'Enter') handleAISubmit();
-        });
-
-        window.triggerPreset = function(presetText) {
-            aiUserInput.value = presetText;
-            handleAISubmit();
+        function runAIPreset(txt) {
+            document.getElementById('aiInput').value = txt;
+            sendAIQuery();
         }
     </script>
 </body>
