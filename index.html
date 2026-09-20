@@ -18,6 +18,58 @@
             padding: 12px 16px;
             border-bottom: 1px solid #222;
         }
+        .app-view {
+            padding: 15px;
+            padding-bottom: 80px;
+        }
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #222;
+            padding-bottom: 10px;
+        }
+        /* Settings Menu Styling */
+        .settings-search {
+            background: #121212;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            color: #888;
+            border: 1px solid #222;
+        }
+        .settings-section-title {
+            font-size: 13px;
+            color: #888;
+            margin: 20px 0 8px 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .settings-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 5px;
+            border-bottom: 1px solid #111;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .settings-item:hover {
+            background: #0a0a0a;
+        }
+        .settings-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .settings-right {
+            color: #888;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -49,28 +101,136 @@
         </div>
     </header>
 
-    <!-- Main Content Area -->
-    <main style="padding-bottom: 70px;">
-        <div style="display: flex; gap: 10px; padding: 10px 16px; overflow-x: auto;">
-            <button style="background: #0095f6; color: #fff; border: none; padding: 6px 14px; border-radius: 20px;">All Media</button>
-            <button style="background: #262626; color: #fff; border: none; padding: 6px 14px; border-radius: 20px;">Photos</button>
-            <button style="background: #262626; color: #fff; border: none; padding: 6px 14px; border-radius: 20px;">Short Videos</button>
+    <!-- Main Dynamic Content Views -->
+    <main>
+        
+        <!-- 1. Feed Section -->
+        <div id="view-feed" class="app-view" style="display: block; text-align: center;">
+            <h3>🏠 Feed</h3>
+            <p>Your media feed will appear here.</p>
         </div>
 
-        <div id="feed-container" style="padding: 20px; text-align: center; color: #666;">
-            <p>No media posts yet.</p>
+        <!-- 2. Explore Section -->
+        <div id="view-explore" class="app-view" style="display: none; text-align: center;">
+            <h3>🔍 Explore</h3>
+            <p>Explore trending content here.</p>
         </div>
+
+        <!-- 3. Post Section -->
+        <div id="view-post" class="app-view" style="display: none; text-align: center;">
+            <h3>➕ Create Post</h3>
+            <p>Upload photos or short videos.</p>
+        </div>
+
+        <!-- 4. AI Section -->
+        <div id="view-ai" class="app-view" style="display: none; text-align: center;">
+            <h3>✨ Gemini AI Assistant</h3>
+            <input type="text" id="userInput" placeholder="Ask Gemini..." style="width: 80%; padding: 8px; margin-top: 10px; background: #111; color: #fff; border: 1px solid #333;" />
+            <br>
+            <button id="sendBtn" style="padding: 8px 15px; margin-top: 10px; background: #0095f6; color: #fff; border: none; border-radius: 4px;">Generate</button>
+            <div id="outputResult" style="margin-top: 15px; color: #ccc;"></div>
+        </div>
+
+        <!-- 5. Profile & Settings Section -->
+        <div id="view-profile" class="app-view" style="display: none;">
+            <div class="profile-header">
+                <h3 style="margin: 0;">👤 Profile</h3>
+                <span id="openSettingsIcon" style="font-size: 22px; cursor: pointer; padding: 5px;" title="Settings and activity">⚙️</span>
+            </div>
+
+            <div id="profile-main-content" style="text-align: center;">
+                <p>Welcome to your profile page.</p>
+            </div>
+
+            <!-- Settings & Activity Menu (Hidden by default, shown when gear icon is clicked) -->
+            <div id="settings-container" style="display: none;">
+                <h3 style="text-align: center; margin-bottom: 15px;">Settings and activity</h3>
+                <div class="settings-search">🔍 Search</div>
+
+                <div class="settings-section-title">Your account</div>
+                <div class="settings-item"><div class="settings-left">⚙️ Accounts Center</div><div class="settings-right">Password, security, personal details ></div></div>
+
+                <div class="settings-section-title">How you use Z-Eye</div>
+                <div class="settings-item"><div class="settings-left">🔖 Saved</div><div class="settings-right">></div></div>
+                <div class="settings-item"><div class="settings-left">📦 Archive</div><div class="settings-right">></div></div>
+                <div class="settings-item"><div class="settings-left">📊 Your activity</div><div class="settings-right">></div></div>
+                <div class="settings-item"><div class="settings-left">🔔 Notifications</div><div class="settings-right">></div></div>
+                <div class="settings-item"><div class="settings-left">⏳ Time management</div><div class="settings-right">></div></div>
+
+                <div class="settings-section-title">Who can see your content</div>
+                <div class="settings-item"><div class="settings-left">🔒 Account privacy</div><div class="settings-right">Public ></div></div>
+                <div class="settings-item"><div class="settings-left">⭐ Close Friends</div><div class="settings-right">257 ></div></div>
+                <div class="settings-item"><div class="settings-left">🔄 Crossposting</div><div class="settings-right">></div></div>
+                <div class="settings-item"><div class="settings-left">🚫 Blocked</div><div class="settings-right">0 ></div></div>
+                <div class="settings-item"><div class="settings-left">📍 Story, live and location</div><div class="settings-right">></div></div>
+
+                <div class="settings-section-title">Your app and media</div>
+                <div class="settings-item"><div class="settings-left">📱 Device permissions</div><div class="settings-right">></div></div>
+                <div class="settings-item"><div class="settings-left">📥 Archiving and downloading</div><div class="settings-right">></div></div>
+                <div class="settings-item"><div class="settings-left">🌐 Language and translations</div><div class="settings-right">></div></div>
+                <div class="settings-item"><div class="settings-left">📊 Data usage and media quality</div><div class="settings-right">></div></div>
+
+                <div class="settings-section-title">More info and support</div>
+                <div class="settings-item"><div class="settings-left">❓ Help</div><div class="settings-right">></div></div>
+                <div class="settings-item"><div class="settings-left">🛡️ Privacy Center</div><div class="settings-right">></div></div>
+                <div class="settings-item"><div class="settings-left">ℹ️ About</div><div class="settings-right">></div></div>
+
+                <div class="settings-section-title">Login</div>
+                <div class="settings-item" style="color: #0095f6;"><div class="settings-left">➕ Add account</div></div>
+                <div class="settings-item" style="color: #ed4956; border-bottom: none;"><div class="settings-left">🚪 Log out</div></div>
+            </div>
+        </div>
+
     </main>
 
     <!-- Bottom Navigation Bar -->
     <nav class="bottom-nav">
-        <a href="#">🏠 Feed</a>
-        <a href="#">🔍 Explore</a>
-        <a href="#">➕ Post</a>
-        <a href="#">✨ AI</a>
-        <a href="#">👤 Profile</a>
+        <a href="#" id="nav-feed">🏠 Feed</a>
+        <a href="#" id="nav-explore">🔍 Explore</a>
+        <a href="#" id="nav-post">➕ Post</a>
+        <a href="#" id="nav-ai">✨ AI</a>
+        <a href="#" id="nav-profile">👤 Profile</a>
     </nav>
 
-    <script type="module" src="api.ts"></script>
+    <!-- Script Logic -->
+    <script>
+        const views = {
+            feed: document.getElementById('view-feed'),
+            explore: document.getElementById('view-explore'),
+            post: document.getElementById('view-post'),
+            ai: document.getElementById('view-ai'),
+            profile: document.getElementById('view-profile')
+        };
+
+        function switchView(activeKey) {
+            Object.keys(views).forEach(key => {
+                if(views[key]) views[key].style.display = 'none';
+            });
+            if(views[activeKey]) {
+                views[activeKey].style.display = 'block';
+            }
+        }
+
+        document.getElementById('nav-feed').addEventListener('click', (e) => { e.preventDefault(); switchView('feed'); });
+        document.getElementById('nav-explore').addEventListener('click', (e) => { e.preventDefault(); switchView('explore'); });
+        document.getElementById('nav-post').addEventListener('click', (e) => { e.preventDefault(); switchView('post'); });
+        document.getElementById('nav-ai').addEventListener('click', (e) => { e.preventDefault(); switchView('ai'); });
+        document.getElementById('nav-profile').addEventListener('click', (e) => { e.preventDefault(); switchView('profile'); });
+
+        // Settings gear icon toggle logic inside Profile tab
+        const openSettingsIcon = document.getElementById('openSettingsIcon');
+        const settingsContainer = document.getElementById('settings-container');
+        const profileMainContent = document.getElementById('profile-main-content');
+
+        openSettingsIcon.addEventListener('click', () => {
+            if (settingsContainer.style.display === 'none') {
+                settingsContainer.style.display = 'block';
+                profileMainContent.style.display = 'none';
+            } else {
+                settingsContainer.style.display = 'none';
+                profileMainContent.style.display = 'block';
+            }
+        });
+    </script>
 </body>
 </html>
