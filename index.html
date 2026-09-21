@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Z-Eye - All Screens Edition</title>
+    <title>Z-Eye - Ultimate Interactive Edition</title>
     <style>
         body {
             background-color: #000000;
@@ -12,7 +12,6 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             overflow-x: hidden;
         }
-        /* Sticky Top Header */
         header {
             display: flex;
             justify-content: space-between;
@@ -27,7 +26,6 @@
         .app-view {
             padding-bottom: 80px;
         }
-        /* Stories Bar */
         .stories-container {
             display: flex;
             gap: 15px;
@@ -62,7 +60,6 @@
             border: 2px solid #000;
             object-fit: cover;
         }
-        /* Feed Posts */
         .post-card {
             border-bottom: 1px solid #1a1a1a;
             margin-bottom: 15px;
@@ -96,12 +93,19 @@
             justify-content: center;
             color: #666;
             font-size: 14px;
+            overflow: hidden;
+        }
+        .post-media img, .post-media video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         .post-actions {
             display: flex;
             justify-content: space-between;
             padding: 10px 15px;
             font-size: 22px;
+            cursor: pointer;
         }
         .post-actions-left {
             display: flex;
@@ -111,7 +115,6 @@
             padding: 0 15px 15px 15px;
             font-size: 13px;
         }
-        /* Profile Layout */
         .profile-container {
             padding: 15px;
         }
@@ -214,7 +217,6 @@
             color: #555;
             font-size: 12px;
         }
-        /* Follower Dashboard */
         .follower-tabs {
             display: flex;
             gap: 20px;
@@ -304,7 +306,10 @@
         .action-btn.primary {
             background: #0095f6;
         }
-        /* Settings Styles */
+        .action-btn.following {
+            background: #333;
+            color: #aaa;
+        }
         .settings-search {
             background: #121212;
             padding: 10px 15px;
@@ -341,7 +346,6 @@
             color: #888;
             font-size: 13px;
         }
-        /* AI Workspace */
         .ai-chip {
             background: #1a1a1a;
             color: #ddd;
@@ -374,7 +378,6 @@
             margin-bottom: 8px;
             line-height: 1.4;
         }
-        /* Bottom Navigation Bar */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -419,6 +422,7 @@
                 <div class="story-item"><div class="story-ring"><div class="story-img"></div></div><span>zixeg_03</span></div>
             </div>
 
+            <!-- Feed Post with Feature 1 (Dynamic Like & Bookmark) -->
             <div class="post-card">
                 <div class="post-header">
                     <div class="post-user">
@@ -430,13 +434,15 @@
                 <div class="post-media">[ High Quality Feed Reel ]</div>
                 <div class="post-actions">
                     <div class="post-actions-left">
-                        <span>🤍</span><span>💬</span><span>↗️</span>
+                        <span id="likeBtn" onclick="toggleLike()" style="cursor: pointer;">🤍</span>
+                        <span>💬</span>
+                        <span>↗️</span>
                     </div>
-                    <span>🔖</span>
+                    <span id="bookmarkBtn" onclick="toggleBookmark()" style="cursor: pointer;">🔖</span>
                 </div>
                 <div class="post-details">
-                    <div style="font-weight: bold; margin-bottom: 4px;">2,410 likes</div>
-                    <div><b>zixeg_03</b> Papurenn💀 Full settings integrated inside Z-Eye web app.</div>
+                    <div style="font-weight: bold; margin-bottom: 4px;"><span id="likeCount">2,410</span> likes</div>
+                    <div><b>zixeg_03</b> Papurenn💀 Full interactive features added!</div>
                 </div>
             </div>
         </div>
@@ -457,43 +463,36 @@
             </div>
         </div>
 
-        <!-- 3. REAL NEW POST CREATION STUDIO -->
+        <!-- 3. POST CREATION STUDIO WITH FEATURE 2 (Real File Upload Preview) -->
         <div id="view-post" style="display: none;">
             <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-bottom: 1px solid #222;">
                 <span id="closePostStudio" style="cursor: pointer; font-size: 18px;">✕</span>
                 <b style="font-size: 16px;">New post</b>
                 <span style="color: #0095f6; font-weight: bold; cursor: pointer;">Next</span>
             </div>
-            <div style="width: 100%; height: 280px; background: #111; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #222; font-size: 14px; color: #888;">
+            <div id="mediaPreviewContainer" class="post-media" style="height: 280px;">
                 [ Selected Photo / Video Preview ]
             </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: #000; font-size: 14px; font-weight: bold;">
+            <input type="file" id="realFileInput" accept="image/*,video/*" style="display: none;" onchange="previewMedia(event)">
+            <div style="padding: 10px 15px; background: #000; text-align: center;">
+                <button onclick="document.getElementById('realFileInput').click()" style="background: #262626; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer;">📂 Choose from Gallery</button>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: #000; font-size: 14px; font-weight: bold;">
                 <span>Recents ▾</span>
-                <span style="background: #222; padding: 5px 10px; border-radius: 15px; font-size: 12px;">Select multiple</span>
             </div>
             <div class="profile-grid" style="grid-template-columns: repeat(4, 1fr);">
-                <div class="grid-tile" style="background:#222;">📷</div>
+                <div class="grid-tile" onclick="document.getElementById('realFileInput').click()" style="background:#222; cursor:pointer;">📁</div>
                 <div class="grid-tile">1</div>
                 <div class="grid-tile">2</div>
                 <div class="grid-tile">3</div>
-                <div class="grid-tile">4</div>
-                <div class="grid-tile">5</div>
-                <div class="grid-tile">6</div>
-                <div class="grid-tile">7</div>
-            </div>
-            <div style="display: flex; justify-content: space-around; padding: 15px; border-top: 1px solid #222; margin-top: 10px; font-size: 13px; color: #888; font-weight: bold;">
-                <span style="color: #fff;">POST</span>
-                <span>STORY</span>
-                <span>REEL</span>
-                <span>LIVE</span>
             </div>
         </div>
 
-        <!-- 4. GEMINI PRO AI STUDIO VIEW -->
+        <!-- 4. GEMINI PRO AI STUDIO WITH FEATURE 4 (LocalStorage Persistence) -->
         <div id="view-ai" style="display: none; padding: 15px; display: flex; flex-direction: column; height: calc(100vh - 130px);">
             <div style="text-align: center; margin-bottom: 12px;">
                 <h3 style="margin: 0; color: #0095f6;">✨ Gemini AI Pro Studio</h3>
-                <p style="color: #888; font-size: 12px; margin-top: 4px;">Advanced creative companion</p>
+                <p style="color: #888; font-size: 12px; margin-top: 4px;">Saved automatically in browser storage</p>
             </div>
             <div style="display: flex; gap: 8px; overflow-x: auto; margin-bottom: 12px;">
                 <button class="ai-chip" onclick="triggerPreset('Generate an aesthetic Instagram caption')">📝 Captions</button>
@@ -501,9 +500,7 @@
                 <button class="ai-chip" onclick="triggerPreset('Write a professional bio')">👤 Bio Ideas</button>
             </div>
             <div id="aiChatContainer" style="background: #0a0a0a; border: 1px solid #222; border-radius: 12px; flex: 1; overflow-y: auto; padding: 12px; margin-bottom: 12px; display: flex; flex-direction: column;">
-                <div class="chat-bubble-ai">
-                    👋 Hello! Main aapka <b>Gemini AI Pro</b> assistant hoon.
-                </div>
+                <!-- Chat bubbles loaded via JS LocalStorage -->
             </div>
             <div style="display: flex; gap: 8px;">
                 <input type="text" id="aiUserInput" placeholder="Ask Gemini Pro..." style="flex: 1; padding: 12px; background: #111; color: #fff; border: 1px solid #333; border-radius: 8px; outline: none;" />
@@ -511,7 +508,7 @@
             </div>
         </div>
 
-        <!-- 5. MESSAGES LIST VIEW -->
+        <!-- 5. MESSAGES VIEW -->
         <div id="view-messages" style="display: none; padding: 15px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <h3 style="margin: 0;">single.boy.as.insta.in ▾</h3>
@@ -522,20 +519,12 @@
                 <input type="text" placeholder="Search chats">
             </div>
             <div class="settings-item" onclick="openChatWindow('Gemini AI Pro')">
-                <div class="settings-left"><div class="post-avatar" style="background: linear-gradient(45deg, #f09433, #dc2743);"></div><div><b>Gemini AI Pro</b><div style="font-size:12px; color:#888;">Online · Tap to open chat</div></div></div>
+                <div class="settings-left"><div class="post-avatar" style="background: linear-gradient(45deg, #f09433, #dc2743);"></div><div><b>Gemini AI Pro</b><div style="font-size:12px; color:#888;">Online</div></div></div>
                 <div class="settings-right" style="color:#0095f6;">AI</div>
-            </div>
-            <div class="settings-item" onclick="openChatWindow('You Lier, mahapatra1813')">
-                <div class="settings-left"><div class="post-avatar"></div><div><b>You Lier, mahapatra1813</b><div style="font-size:12px; color:#888;">Sent a reel · 2h</div></div></div>
-                <div class="settings-right">📷</div>
-            </div>
-            <div class="settings-item" onclick="openChatWindow('Ruhi Sarma')">
-                <div class="settings-left"><div class="post-avatar"></div><div><b>Ruhi Sarma</b><div style="font-size:12px; color:#888;">Active now</div></div></div>
-                <div class="settings-right" style="width: 8px; height: 8px; background: #00ff00; border-radius: 50%;"></div>
             </div>
         </div>
 
-        <!-- 5.1 1-ON-1 ACTIVE CHAT SCREEN -->
+        <!-- 5.1 CHAT WINDOW -->
         <div id="view-chat-window" style="display: none; flex-direction: column; height: calc(100vh - 55px);">
             <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-bottom: 1px solid #1a1a1a;">
                 <div style="display: flex; align-items: center; gap: 10px;">
@@ -543,61 +532,29 @@
                     <div class="post-avatar" style="width: 30px; height: 30px;"></div>
                     <div><b id="activeChatName" style="font-size: 14px;">Chat</b><div style="font-size: 11px; color: #888;">Active now</div></div>
                 </div>
-                <div style="display: flex; gap: 15px; font-size: 18px;">
-                    <span>📞</span>
-                    <span>📹</span>
-                </div>
             </div>
             <div style="flex: 1; padding: 15px; overflow-y: auto;">
-                <div style="text-align: center; color: #666; font-size: 12px; margin: 10px 0;">5:25 AM</div>
                 <div style="background: #111; border: 1px solid #222; border-radius: 12px; width: 200px; height: 260px; margin-left: auto; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #aaa;">
                     🎬 Shared Reel
                 </div>
             </div>
             <div style="display: flex; align-items: center; gap: 10px; padding: 10px 15px; border-top: 1px solid #222; background: #000;">
-                <span style="background: #0095f6; padding: 6px; border-radius: 50%; font-size: 14px;">📷</span>
                 <input type="text" placeholder="Message..." style="flex: 1; background: #111; border: 1px solid #333; color: #fff; padding: 8px 15px; border-radius: 20px; outline: none; font-size: 13px;">
-                <span>🎙️</span>
-                <span>🖼️</span>
-                <span>➕</span>
             </div>
         </div>
 
-        <!-- 6. REAL NOTIFICATIONS SCREEN -->
+        <!-- 6. NOTIFICATIONS VIEW -->
         <div id="view-notifications" style="display: none; padding: 15px;">
             <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
                 <span id="backToFeedFromNotif" style="cursor: pointer; font-size: 20px;">←</span>
                 <h3 style="margin: 0;">Notifications</h3>
             </div>
-            <div style="font-weight: bold; font-size: 13px; margin: 15px 0 10px 0; color: #888;">Featured</div>
-            <div class="user-list-item">
-                <div class="user-info">
-                    <div class="user-avatar"></div>
-                    <div><b style="font-size: 13px;">sirapanimunda...</b><div style="font-size: 12px; color: #888;">on Instagram · 7h</div></div>
-                </div>
-                <button class="action-btn primary">Follow</button>
-            </div>
             <div style="background: #111; padding: 12px; border-radius: 8px; margin: 15px 0; font-size: 13px; border: 1px solid #222;">
-                ✔ <b>You're all caught up</b><br><span style="color: #888; font-size: 12px;">See new activity for your account</span>
-            </div>
-            <div style="font-weight: bold; font-size: 13px; margin: 15px 0 10px 0; color: #888;">Yesterday</div>
-            <div class="user-list-item">
-                <div class="user-info">
-                    <div class="user-avatar"></div>
-                    <div style="font-size: 13px;"><b>waifusdream07</b> liked your comment 🔥 · 9h</div>
-                </div>
-                <div style="width: 35px; height: 35px; background: #222; border-radius: 4px;"></div>
-            </div>
-            <div class="user-list-item">
-                <div class="user-info">
-                    <div class="user-avatar"></div>
-                    <div style="font-size: 13px;"><b>mahapatra1813</b> invited you to collaborate on a post · 11h</div>
-                </div>
-                <div style="width: 35px; height: 35px; background: #222; border-radius: 4px;"></div>
+                ✔ <b>You're all caught up</b>
             </div>
         </div>
 
-        <!-- 7. PROFILE & DETAILED SETTINGS DASHBOARD VIEW -->
+        <!-- 7. PROFILE & SETTINGS VIEW WITH FEATURE 3 (Interactive Follow Buttons) -->
         <div id="view-profile" style="display: none;" class="profile-container">
             
             <div id="profile-dashboard-content">
@@ -633,38 +590,22 @@
                     <button class="profile-btn">Share profile</button>
                 </div>
 
-                <div class="highlights-bar">
-                    <div class="highlight-item"><div class="highlight-circle"></div><span>New</span></div>
-                    <div class="highlight-item"><div class="highlight-circle"></div><span>Music</span></div>
-                    <div class="highlight-item"><div class="highlight-circle"></div><span>Edits</span></div>
-                </div>
-
+                <!-- Follower List with Feature 3 (Interactive Toggle Buttons) -->
                 <div style="margin-bottom: 20px;">
                     <div class="follower-tabs">
                         <span class="active-tab">215 Followers</span>
                         <span>525 Following</span>
-                        <span>0 Subscriptions</span>
                     </div>
 
-                    <div class="dashboard-search">
-                        <span>🔍</span>
-                        <input type="text" placeholder="Search followers">
-                    </div>
-
-                    <div class="category-box">
-                        <div class="category-icon">👥</div>
-                        <div>
-                            <div style="font-weight: bold; font-size: 14px;">People you don't follow back</div>
-                            <div style="font-size: 12px; color: #888;">5196.ranjit and 6 others</div>
+                    <div class="user-list-item">
+                        <div class="user-info">
+                            <div class="user-avatar"></div>
+                            <div>
+                                <div class="user-name">dehurym610</div>
+                                <div class="user-sub">Mangulu Dehury</div>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="category-box">
-                        <div class="category-icon">⚡</div>
-                        <div>
-                            <div style="font-weight: bold; font-size: 14px;">Least interacted with</div>
-                            <div style="font-size: 12px; color: #888;">mahanta4267 and 49 others</div>
-                        </div>
+                        <button class="action-btn primary" id="followBtn1" onclick="toggleFollowBtn('followBtn1')">Follow back</button>
                     </div>
                 </div>
 
@@ -681,54 +622,7 @@
                     <span id="closeSettingsMain" style="cursor: pointer; font-size: 18px;">←</span>
                     <h3 style="margin: 0;">Settings and activity</h3>
                 </div>
-                <div class="settings-search">🔍 Search settings</div>
-
-                <div class="settings-section-title">Your account</div>
-                <div class="settings-item" onclick="openSubMenu('accounts')"><div class="settings-left">⚙️ Accounts Center</div><div class="settings-right">></div></div>
-                <div class="settings-item" onclick="openSubMenu('activity')"><div class="settings-left">📊 Your activity</div><div class="settings-right">></div></div>
-                <div class="settings-item" onclick="openSubMenu('notifications')"><div class="settings-left">🔔 Notifications settings</div><div class="settings-right">></div></div>
-                <div class="settings-item" onclick="openSubMenu('timemgmt')"><div class="settings-left">⏳ Time management</div><div class="settings-right">></div></div>
                 <div class="settings-item" style="color: #ed4956;"><div class="settings-left">🚪 Log out</div></div>
-            </div>
-
-            <!-- SUB-SCREENS -->
-            <div id="submenu-activity" style="display: none;">
-                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
-                    <span onclick="backToSettingsMain()" style="cursor: pointer; font-size: 18px;">←</span>
-                    <h3 style="margin: 0;">Your activity</h3>
-                </div>
-                <div class="settings-item"><div class="settings-left">🤍 Likes</div><div class="settings-right">></div></div>
-                <div class="settings-item"><div class="settings-left">💬 Comments</div><div class="settings-right">></div></div>
-                <div class="settings-item"><div class="settings-left">🕒 Archived</div><div class="settings-right">></div></div>
-            </div>
-
-            <div id="submenu-notifications" style="display: none;">
-                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
-                    <span onclick="backToSettingsMain()" style="cursor: pointer; font-size: 18px;">←</span>
-                    <h3 style="margin: 0;">Notifications settings</h3>
-                </div>
-                <div class="settings-item"><div class="settings-left">⏸️ Pause all</div><div class="settings-right"><input type="checkbox"></div></div>
-                <div class="settings-item"><div class="settings-left">🌙 Sleep mode</div><div class="settings-right">Off ></div></div>
-            </div>
-
-            <div id="submenu-timemgmt" style="display: none;">
-                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
-                    <span onclick="backToSettingsMain()" style="cursor: pointer; font-size: 18px;">←</span>
-                    <h3 style="margin: 0;">Time management</h3>
-                </div>
-                <div style="background: #111; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
-                    <div style="font-size: 24px; font-weight: bold;">1h 2m</div>
-                    <div style="font-size: 12px; color: #888;">Daily average time spent</div>
-                </div>
-            </div>
-
-            <div id="submenu-accounts" style="display: none;">
-                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
-                    <span onclick="backToSettingsMain()" style="cursor: pointer; font-size: 18px;">←</span>
-                    <h3 style="margin: 0;">Accounts Centre</h3>
-                </div>
-                <div class="settings-item"><div class="settings-left">👤 Personal details</div><div class="settings-right">></div></div>
-                <div class="settings-item"><div class="settings-left">🔒 Password & security</div><div class="settings-right">></div></div>
             </div>
         </div>
 
@@ -769,14 +663,110 @@
         document.getElementById('nav-ai').addEventListener('click', (e) => { e.preventDefault(); switchView('ai'); });
         document.getElementById('nav-profile').addEventListener('click', (e) => { e.preventDefault(); switchView('profile'); });
 
-        // Header Navigation
         document.getElementById('nav-messages').addEventListener('click', () => { switchView('messages'); });
         document.getElementById('nav-notifications').addEventListener('click', () => { switchView('notifications'); });
         document.getElementById('backToFeedFromMsg').addEventListener('click', () => { switchView('feed'); });
         document.getElementById('backToFeedFromNotif').addEventListener('click', () => { switchView('feed'); });
         document.getElementById('closePostStudio').addEventListener('click', () => { switchView('feed'); });
 
-        // Chat Actions
+        // Feature 1 Logic: Dynamic Like & Bookmark
+        let isLiked = false;
+        function toggleLike() {
+            isLiked = !isLiked;
+            const btn = document.getElementById('likeBtn');
+            const countElem = document.getElementById('likeCount');
+            let count = parseInt(countElem.textContent.replace(',', ''));
+            if(isLiked) {
+                btn.textContent = '❤️';
+                countElem.textContent = (count + 1).toLocaleString();
+            } else {
+                btn.textContent = '🤍';
+                countElem.textContent = (count - 1).toLocaleString();
+            }
+        }
+
+        let isBookmarked = false;
+        function toggleBookmark() {
+            isBookmarked = !isBookmarked;
+            document.getElementById('bookmarkBtn').textContent = isBookmarked ? '🔖' : '🔖';
+            document.getElementById('bookmarkBtn').style.opacity = isBookmarked ? '1' : '0.6';
+        }
+
+        // Feature 2 Logic: Real File Upload Preview
+        function previewMedia(event) {
+            const file = event.target.files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const container = document.getElementById('mediaPreviewContainer');
+                    if(file.type.startsWith('video/')) {
+                        container.innerHTML = `<video src="${e.target.result}" controls autoplay style="width:100%; height:100%; object-fit:cover;"></video>`;
+                    } else {
+                        container.innerHTML = `<img src="${e.target.result}" style="width:100%; height:100%; object-fit:cover;">`;
+                    }
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Feature 3 Logic: Interactive Follow Button
+        function toggleFollowBtn(btnId) {
+            const btn = document.getElementById(btnId);
+            if(btn.textContent === 'Follow back') {
+                btn.textContent = 'Following';
+                btn.className = 'action-btn following';
+            } else {
+                btn.textContent = 'Follow back';
+                btn.className = 'action-btn primary';
+            }
+        }
+
+        // Feature 4 Logic: Local Storage Persistence for AI Chat
+        const chatContainer = document.getElementById('aiChatContainer');
+        const aiUserInput = document.getElementById('aiUserInput');
+        const aiSendBtn = document.getElementById('aiSendBtn');
+
+        function loadChatHistory() {
+            const saved = localStorage.getItem('zey_ai_chat');
+            if(saved) {
+                chatContainer.innerHTML = saved;
+            } else {
+                chatContainer.innerHTML = `<div class="chat-bubble-ai">👋 Hello! Main aapka <b>Gemini AI Pro</b> assistant hoon. Your chat is saved automatically!</div>`;
+            }
+        }
+
+        function saveChatHistory() {
+            localStorage.setItem('zey_ai_chat', chatContainer.innerHTML);
+        }
+
+        function appendMessage(text, sender) {
+            const bubble = document.createElement('div');
+            bubble.className = sender === 'user' ? 'chat-bubble-user' : 'chat-bubble-ai';
+            bubble.innerHTML = text;
+            chatContainer.appendChild(bubble);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            saveChatHistory();
+        }
+
+        function handleAISubmit() {
+            const query = aiUserInput.value.trim();
+            if(!query) return;
+            appendMessage(query, 'user');
+            aiUserInput.value = '';
+            setTimeout(() => {
+                let aiReply = `Gemini Pro response for "<b>${query}</b>": Saved to LocalStorage successfully!`;
+                if(query.toLowerCase().includes('caption')) aiReply = `📝 <b>Caption:</b> "Living life on my own terms. 🚀✨"`;
+                appendMessage(aiReply, 'ai');
+            }, 600);
+        }
+
+        aiSendBtn.addEventListener('click', handleAISubmit);
+        aiUserInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') handleAISubmit(); });
+        window.triggerPreset = function(text) { aiUserInput.value = text; handleAISubmit(); }
+
+        loadChatHistory();
+
+        // Chat window opener
         window.openChatWindow = function(name) {
             document.getElementById('activeChatName').textContent = name;
             switchView('chatWindow');
@@ -788,80 +778,24 @@
         const openSettingsIcon = document.getElementById('openSettingsIcon');
         const settingsContainer = document.getElementById('settings-container');
         const profileDashboardContent = document.getElementById('profile-dashboard-content');
-        
-        const subActivity = document.getElementById('submenu-activity');
-        const subNotifications = document.getElementById('submenu-notifications');
-        const subTimeMgmt = document.getElementById('submenu-timemgmt');
-        const subAccounts = document.getElementById('submenu-accounts');
-
-        function hideAllProfileSubViews() {
-            profileDashboardContent.style.display = 'none';
-            settingsContainer.style.display = 'none';
-            subActivity.style.display = 'none';
-            subNotifications.style.display = 'none';
-            subTimeMgmt.style.display = 'none';
-            subAccounts.style.display = 'none';
-        }
 
         openSettingsIcon.addEventListener('click', () => {
-            if (settingsContainer.style.display === 'none' && profileDashboardContent.style.display !== 'none') {
-                hideAllProfileSubViews();
+            if (settingsContainer.style.display === 'none') {
+                profileDashboardContent.style.display = 'none';
                 settingsContainer.style.display = 'block';
                 openSettingsIcon.textContent = '✕';
             } else {
-                hideAllProfileSubViews();
+                settingsContainer.style.display = 'none';
                 profileDashboardContent.style.display = 'block';
                 openSettingsIcon.textContent = '⚙️';
             }
         });
 
         document.getElementById('closeSettingsMain').addEventListener('click', () => {
-            hideAllProfileSubViews();
+            settingsContainer.style.display = 'none';
             profileDashboardContent.style.display = 'block';
             openSettingsIcon.textContent = '⚙️';
         });
-
-        window.openSubMenu = function(menuName) {
-            hideAllProfileSubViews();
-            if(menuName === 'activity') subActivity.style.display = 'block';
-            if(menuName === 'notifications') subNotifications.style.display = 'block';
-            if(menuName === 'timemgmt') subTimeMgmt.style.display = 'block';
-            if(menuName === 'accounts') subAccounts.style.display = 'block';
-        }
-
-        window.backToSettingsMain = function() {
-            hideAllProfileSubViews();
-            settingsContainer.style.display = 'block';
-        }
-
-        // Gemini AI Studio
-        const chatContainer = document.getElementById('aiChatContainer');
-        const aiUserInput = document.getElementById('aiUserInput');
-        const aiSendBtn = document.getElementById('aiSendBtn');
-
-        function appendMessage(text, sender) {
-            const bubble = document.createElement('div');
-            bubble.className = sender === 'user' ? 'chat-bubble-user' : 'chat-bubble-ai';
-            bubble.innerHTML = text;
-            chatContainer.appendChild(bubble);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-
-        function handleAISubmit() {
-            const query = aiUserInput.value.trim();
-            if(!query) return;
-            appendMessage(query, 'user');
-            aiUserInput.value = '';
-            setTimeout(() => {
-                let aiReply = `Gemini Pro response for "<b>${query}</b>": Fully operational inside your Z-Eye app!`;
-                if(query.toLowerCase().includes('caption')) aiReply = `📝 <b>Caption:</b> "Creating futures with code. 🚀✨"`;
-                appendMessage(aiReply, 'ai');
-            }, 600);
-        }
-
-        aiSendBtn.addEventListener('click', handleAISubmit);
-        aiUserInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') handleAISubmit(); });
-        window.triggerPreset = function(text) { aiUserInput.value = text; handleAISubmit(); }
     </script>
 </body>
 </html>
