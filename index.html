@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Z-Eye</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
 
     <!-- AUTHENTICATION SCREEN -->
     <div id="view-auth" class="auth-wrapper">
         <div class="auth-box">
-            <h1 class="logo" style="margin-bottom: 25px;">Z-Eye</h1>
+            <h1 class="logo" style="margin-bottom: 25px; font-family: cursive;">Z-Eye</h1>
             <div id="login-form">
                 <input type="text" class="auth-input" id="loginEmail" placeholder="Phone number, username, or email">
                 <input type="password" class="auth-input" id="loginPass" placeholder="Password">
@@ -26,7 +26,7 @@
     <div id="main-app" style="display: none;">
         <!-- Top Header -->
         <header>
-            <div class="logo">Z-Eye</div>
+            <div class="logo" style="font-family: cursive; font-size: 24px; font-weight: bold;">Z-Eye</div>
             <div class="header-icons">
                 <span onclick="switchTab('messages')">💬</span>
                 <span onclick="alert('No new notifications')">❤️</span>
@@ -112,9 +112,8 @@
                 </div>
             </div>
 
-            <!-- 5. PROFILE & SETTINGS -->
+            <!-- 5. PROFILE & SETTINGS (Log out is inside Settings) -->
             <div id="tab-profile" class="tab-content profile-container" style="display: none;">
-                <!-- Main Profile View -->
                 <div id="profile-main-view">
                     <div class="profile-top">
                         <div class="profile-avatar-large"></div>
@@ -141,7 +140,7 @@
                     </div>
                 </div>
 
-                <!-- Settings & Activity View (Instagram Style - Log out is here) -->
+                <!-- Settings View -->
                 <div id="profile-settings-view" style="display: none;">
                     <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid #262626; padding-bottom: 10px;">
                         <span onclick="closeSettings()" style="cursor: pointer; font-size: 20px;">←</span>
@@ -168,7 +167,6 @@
                     </div>
                 </div>
             </div>
-
         </main>
 
         <!-- Bottom Navigation Bar -->
@@ -181,6 +179,80 @@
         </nav>
     </div>
 
-    <script src="script.js"></script>
+    <!-- JavaScript Logic -->
+    <script>
+        function handleAuthLogin() {
+            const email = document.getElementById('loginEmail').value;
+            if(!email) { alert('Please enter your email or username'); return; }
+            const username = email.split('@')[0];
+            document.getElementById('profName').innerText = username;
+            document.getElementById('profHandle').innerText = '@' + username;
+            document.getElementById('view-auth').style.display = 'none';
+            document.getElementById('main-app').style.display = 'block';
+            switchTab('feed');
+        }
+
+        function handleGoogleLogin() {
+            alert('Google & 2FA Biometric Secure Login Successful!');
+            document.getElementById('profName').innerText = 'Google User';
+            document.getElementById('profHandle').innerText = '@google_user';
+            document.getElementById('view-auth').style.display = 'none';
+            document.getElementById('main-app').style.display = 'block';
+            switchTab('feed');
+        }
+
+        function openSettings() {
+            document.getElementById('profile-main-view').style.display = 'none';
+            document.getElementById('profile-settings-view').style.display = 'block';
+        }
+
+        function closeSettings() {
+            document.getElementById('profile-main-view').style.display = 'block';
+            document.getElementById('profile-settings-view').style.display = 'none';
+        }
+
+        function handleLogout() {
+            closeSettings();
+            document.getElementById('main-app').style.display = 'none';
+            document.getElementById('view-auth').style.display = 'flex';
+        }
+
+        function switchTab(tabName) {
+            closeSettings();
+            const tabs = ['feed', 'explore', 'post', 'ai', 'profile', 'messages'];
+            tabs.forEach(t => {
+                const el = document.getElementById('tab-' + t);
+                if(el) el.style.display = (t === tabName) ? 'block' : 'none';
+            });
+        }
+
+        function sendAIQuery() {
+            const input = document.getElementById('aiInput');
+            const q = input.value.trim();
+            if(!q) return;
+            
+            const box = document.getElementById('aiChatBox');
+            box.innerHTML += `<div class="bubble-user">${q}</div>`;
+            input.value = '';
+            box.scrollTop = box.scrollHeight;
+
+            setTimeout(() => {
+                let reply = `🤖 <b>AI Output:</b> Processed successfully across global languages.`;
+                const lq = q.toLowerCase();
+                if(lq.includes('photo')) reply = `📸 <b>Photo Prompt:</b> Cinematic, hyper-realistic, 8k resolution neon lighting.`;
+                else if(lq.includes('video')) reply = `🎥 <b>Video Script:</b> Hook (0-3s) -> Showcase -> Call to action.`;
+                else if(lq.includes('translate')) reply = `🌍 <b>Translations:</b><br>🇮🇳 Hindi: ज़ेड-आई स्टूडियो<br>🇪🇸 Spanish: Estudio Z-Eye<br>🇯🇵 Japanese: Z-Eye スタジオ`;
+                else if(lq.includes('hashtag')) reply = `#️⃣ <b>Hashtags:</b> #ZEyeApp #CreatorStudio #ViralReels #GlobalTech`;
+                
+                box.innerHTML += `<div class="bubble-ai">${reply}</div>`;
+                box.scrollTop = box.scrollHeight;
+            }, 600);
+        }
+
+        function runAIPreset(txt) {
+            document.getElementById('aiInput').value = txt;
+            sendAIQuery();
+        }
+    </script>
 </body>
 </html>
