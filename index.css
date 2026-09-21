@@ -1,1 +1,310 @@
-@import "tailwindcss";
+* { box-sizing: border-box; }
+body {
+    background-color: #000000;
+    color: #f5f5f5;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    overflow-x: hidden;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    border-bottom: 1px solid #262626;
+    background: #000;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+.logo {
+    font-family: cursive;
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+.header-icons {
+    display: flex;
+    gap: 20px;
+    font-size: 22px;
+    cursor: pointer;
+}
+.app-view {
+    padding-bottom: 70px;
+    max-width: 470px;
+    margin: 0 auto;
+}
+.auth-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+    background: #000;
+}
+.auth-box {
+    width: 100%;
+    max-width: 350px;
+    border: 1px solid #262626;
+    padding: 30px 20px;
+    border-radius: 4px;
+    background: #000;
+    text-align: center;
+}
+.auth-input {
+    width: 100%;
+    background: #121212;
+    border: 1px solid #363636;
+    border-radius: 4px;
+    padding: 9px 12px;
+    color: #fff;
+    font-size: 14px;
+    margin-bottom: 8px;
+    outline: none;
+}
+.auth-button {
+    width: 100%;
+    background: #0095f6;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+.auth-button:hover { background: #1877f2; }
+.stories-container {
+    display: flex;
+    gap: 12px;
+    padding: 12px 10px;
+    overflow-x: auto;
+    border-bottom: 1px solid #262626;
+    background: #000;
+}
+.stories-container::-webkit-scrollbar { display: none; }
+.story-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: #a8a8a8;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+.story-ring {
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+}
+.story-img {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: #262626;
+    border: 2px solid #000;
+    object-fit: cover;
+}
+.post-card {
+    border-bottom: 1px solid #262626;
+    margin-bottom: 12px;
+    background: #000;
+}
+.post-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+}
+.post-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 600;
+}
+.post-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #333;
+    object-fit: cover;
+}
+.post-media {
+    width: 100%;
+    height: 420px;
+    background: #121212;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #737373;
+    font-size: 14px;
+}
+.post-actions {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 12px;
+    font-size: 22px;
+}
+.post-actions-left {
+    display: flex;
+    gap: 16px;
+}
+.post-details {
+    padding: 0 12px 12px 12px;
+    font-size: 14px;
+}
+.profile-container {
+    padding: 16px;
+}
+.profile-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.profile-avatar-large {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #262626;
+    border: 1px solid #dbdbdb;
+}
+.profile-stats {
+    display: flex;
+    gap: 25px;
+    text-align: center;
+}
+.stat-val {
+    font-weight: bold;
+    font-size: 16px;
+}
+.stat-lbl {
+    font-size: 12px;
+    color: #a8a8a8;
+}
+.profile-bio {
+    font-size: 14px;
+    line-height: 1.4;
+    margin-bottom: 15px;
+}
+.profile-buttons {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+.ig-button {
+    flex: 1;
+    background: #363636;
+    color: #fff;
+    border: none;
+    padding: 7px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+}
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+}
+.grid-item {
+    aspect-ratio: 1;
+    background: #121212;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #737373;
+    font-size: 12px;
+}
+.ai-studio {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 120px);
+}
+.ai-chips {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    margin-bottom: 12px;
+    padding-bottom: 4px;
+}
+.ai-chips::-webkit-scrollbar { display: none; }
+.ai-chip {
+    background: #262626;
+    color: #f5f5f5;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.ai-chip:hover { background: #0095f6; }
+.chat-box {
+    flex: 1;
+    background: #121212;
+    border: 1px solid #262626;
+    border-radius: 8px;
+    padding: 12px;
+    overflow-y: auto;
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.bubble-ai {
+    background: #262626;
+    color: #f5f5f5;
+    padding: 10px 14px;
+    border-radius: 12px 12px 12px 2px;
+    font-size: 13px;
+    max-width: 85%;
+    line-height: 1.4;
+}
+.bubble-user {
+    background: #0095f6;
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 12px 12px 2px 12px;
+    font-size: 13px;
+    max-width: 80%;
+    align-self: flex-end;
+}
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 52px;
+    background-color: #000000;
+    border-top: 1px solid #262626;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1000;
+}
+.bottom-nav a {
+    color: #f5f5f5;
+    text-decoration: none;
+    font-size: 22px;
+}
+.settings-item {
+    padding: 14px 0;
+    border-bottom: 1px solid #1a1a1a;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
